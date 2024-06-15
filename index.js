@@ -1,0 +1,31 @@
+import express from 'express';
+import appRouter from './routes/router.js';
+import { connectToDatabase, pool } from './db/db.js';
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+
+app.use('/api/v1/cases', appRouter);
+
+const PORT = process.env.API_PORT || 3001;
+
+// Connect to PostGres database
+connectToDatabase()
+  .then(() => {
+    // Start the API server
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+
+      // Handle server errors
+      server.on('error', (err) => {
+        console.error('Error starting the server:', err);
+        process.exit(1);
+      });
+    });
+  })
+  .catch((err) => {
+    console.error('Error connecting to the database:', err);
+    process.exit(1);
+  });
