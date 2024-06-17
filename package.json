@@ -4,7 +4,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "import": "node sql_imports/firearms_import.js",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "prod": "node index.js",

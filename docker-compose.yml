@@ -11,7 +11,7 @@ services:
     networks:
       - vp_network
     volumes:
-      - ./db_scripts:/docker-entrypoint-initdb.d
+      - ./init_db:/docker-entrypoint-initdb.d
       - postgres_data:/var/lib/postgresql/data
 
   api:
@@ -26,10 +26,10 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - PORT=3001  # Set the environment variable for the API port
+      - PORT=3001
     volumes:
-      - ./backend:/usr/src/app
-      - ./backend/sql_imports:/usr/src/app/sql_imports
+      - ./:/usr/src/app
+      - ./sql_imports:/usr/src/app/sql_imports
 
   frontend:
     build:
