@@ -1,6 +1,7 @@
 import express from 'express';
 import appRouter from './routes/router.js';
 import { connectToDatabase, pool } from './db/db.js';
+import importCases from './sql_imports/import_cases.js';
 
 const app = express();
 
@@ -29,3 +30,5 @@ connectToDatabase()
     console.error('Error connecting to the database:', err);
     process.exit(1);
   });
+
+importCases(pool);
