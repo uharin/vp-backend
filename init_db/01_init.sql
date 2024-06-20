@@ -1,7 +1,3 @@
--- CREATE TABLE races (
---     race_id SERIAL PRIMARY KEY,
---     race VARCHAR(50) UNIQUE NOT NULL
--- );
 
 -- CREATE TABLE educations (
 --     education_id SERIAL PRIMARY KEY,
@@ -13,53 +9,70 @@
 --     status VARCHAR(50) UNIQUE NOT NULL
 -- );
 
--- CREATE TABLE genders (
---     gender_id SERIAL PRIMARY KEY,
---     gender VARCHAR(10) UNIQUE NOT NULL
--- );
+
 
 CREATE TABLE access_methods (
-    access_method_id INT PRIMARY KEY,
+    access_method_id SERIAL PRIMARY KEY,
     access_method VARCHAR(50)
 );
 
 CREATE TABLE access_types (
-    access_type_id INT PRIMARY KEY,
+    access_type_id SERIAL PRIMARY KEY,
     access_type VARCHAR(50)
 );
 
 CREATE TABLE armed_bystanders (
-    armed_bystander_id INT PRIMARY KEY,
+    armed_bystander_id SERIAL PRIMARY KEY,
     armed_bystander_type VARCHAR(100)
 );
 
 CREATE TABLE civic_designations (
-    civic_designation_id INT PRIMARY KEY,
+    civic_designation_id SERIAL PRIMARY KEY,
     civic_designation_type VARCHAR(50)
 );
 
+CREATE TABLE genders (
+    gender_id SERIAL PRIMARY KEY,
+    gender VARCHAR(50) UNIQUE NOT NULL
+);
+
 CREATE TABLE locations (
-    location_id INT PRIMARY KEY,
+    location_id SERIAL PRIMARY KEY,
     location_type VARCHAR(100)
 );
 
+CREATE TABLE races (
+    race_id SERIAL PRIMARY KEY,
+    race VARCHAR(50) UNIQUE NOT NULL
+);
+
 CREATE TABLE regions (
-    region_id INT PRIMARY KEY,
+    region_id SERIAL PRIMARY KEY,
     region VARCHAR(50)
 );
 
 CREATE TABLE states (
-    state_id INT PRIMARY KEY,
+    state_id SERIAL PRIMARY KEY,
     state VARCHAR(50)
 );
 
 CREATE TABLE victim_locations (
-    victim_location_id INT PRIMARY KEY,
+    victim_location_id SERIAL PRIMARY KEY,
     victim_location VARCHAR(50)
 );
 
+CREATE TABLE victim_knew_shooter_statuses (
+    victim_knew_shooter_status_id SERIAL PRIMARY KEY,
+    victim_knew_shooter_status VARCHAR(10) UNIQUE NOT NULL
+);
+
+CREATE TABLE victim_relationships (
+    victim_relationship_id SERIAL PRIMARY KEY,
+    victim_relationship VARCHAR(50)
+);
+
 CREATE TABLE cases (
-    case_id INT PRIMARY KEY,
+    case_id SERIAL PRIMARY KEY,
     full_date DATE,
     day_of_week VARCHAR(10),
     day INT,
@@ -100,6 +113,31 @@ CREATE TABLE cases (
     FOREIGN KEY (access_method_id) REFERENCES access_methods(access_method_id),
     FOREIGN KEY (victim_location_id) REFERENCES victim_locations(victim_location_id),
     FOREIGN KEY (armed_bystander_id) REFERENCES armed_bystanders(armed_bystander_id)
+);
+
+CREATE TABLE victims (
+    victim_id SERIAL PRIMARY KEY,
+    victim_name VARCHAR(255),
+    age INT,
+    gender_id INT,
+    race_id INT,
+    victim_knew_shooter_status_id INT,
+    relationship_to_shooter_details VARCHAR(255),
+    victim_relationship_id INT,
+    life_expectancy FLOAT,
+    years_lost FLOAT,
+    FOREIGN KEY (gender_id) REFERENCES genders(gender_id),
+    FOREIGN KEY (race_id) REFERENCES races(race_id),
+    FOREIGN KEY (victim_knew_shooter_status_id) REFERENCES victim_knew_shooter_statuses(victim_knew_shooter_status_id),
+    FOREIGN KEY (victim_relationship_id) REFERENCES victim_relationships(victim_relationship_id)
+);
+
+CREATE TABLE case_victims (
+    case_id INT NOT NULL,
+    victim_id INT NOT NULL,
+    PRIMARY KEY (case_id, victim_id),
+    FOREIGN KEY (case_id) REFERENCES cases(case_id),
+    FOREIGN KEY (victim_id) REFERENCES victims(victim_id)
 );
 
 -- CREATE TABLE shooters (
