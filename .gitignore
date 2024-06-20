@@ -11,7 +11,7 @@ package-lock.json
 /build
 
 # ignore VP proprietary data
-/sql_imports/*.csv
+/sql_imports/csv
 
 # misc
 .DS_Store
