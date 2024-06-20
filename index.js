@@ -2,6 +2,7 @@ import express from 'express';
 import appRouter from './routes/router.js';
 import { connectToDatabase, pool } from './db/db.js';
 import importCases from './sql_imports/import_cases.js';
+import importVictims from './sql_imports/import_victims.js';
 
 const app = express();
 
@@ -32,3 +33,4 @@ connectToDatabase()
   });
 
 importCases(pool);
+importVictims(pool);
