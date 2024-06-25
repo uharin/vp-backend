@@ -58,9 +58,9 @@ VALUES
 INSERT INTO relationship_statuses (relationship_status_id, relationship_status_description)
 VALUES
   (1, 'Single'),
-  (2, 'Boyfriend/girlfriend'),
+  (2, 'Boyfriend or girlfriend'),
   (3, 'Married'),
-  (4, 'Divorced/separated/widowed');
+  (4, 'Divorced or separated or widowed');
 
 INSERT INTO religions (religion_id, religion_name)
 VALUES
@@ -68,7 +68,7 @@ VALUES
   (2, 'Christian'),
   (3, 'Muslim'),
   (4, 'Buddhist'),
-  (5, 'Cultural spirituality/other'),
+  (5, 'Cultural spirituality or other'),
   (6, 'Jewish');
 
 INSERT INTO school_performances (school_performance_id, performance_category) VALUES

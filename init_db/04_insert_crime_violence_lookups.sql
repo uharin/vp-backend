@@ -6,20 +6,6 @@ VALUES
   (4, 'Charged'),
   (5, 'Convicted');
 
-INSERT INTO domestic_abuse_histories (domestic_abuse_history_id, abuse_history) 
-VALUES
-  (1, 'No evidence'),
-  (2, 'Abused romantic partner'),
-  (3, 'Abused other family');
-
-INSERT INTO domestic_abuses (domestic_abuse_id, abuse_type) 
-VALUES
-  (1, 'N/A'),
-  (2, 'Non-sexual physical violence'),
-  (3, 'Sexual violence'),
-  (4, 'Threats or coercive control'),
-  (5, 'Threats with deadly weapon');
-
 INSERT INTO crimes1 (crimes1_id, crime_type)
 VALUES
   (1, 'No evidence'),
@@ -44,6 +30,20 @@ VALUES
   (8, 'Drugs'),
   (9, 'DUI'),
   (10, 'Other');
+
+INSERT INTO domestic_abuse_histories (domestic_abuse_history_id, abuse_history) 
+VALUES
+  (1, 'No evidence'),
+  (2, 'Abused romantic partner'),
+  (3, 'Abused other family');
+
+INSERT INTO domestic_abuses (domestic_abuse_id, abuse_type) 
+VALUES
+  (1, 'N/A'),
+  (2, 'Non-sexual physical violence'),
+  (3, 'Sexual violence'),
+  (4, 'Threats or coercive control'),
+  (5, 'Threats with deadly weapon');
 
 INSERT INTO hate_group_associations (hate_group_association_id, hate_group_type) 
 VALUES

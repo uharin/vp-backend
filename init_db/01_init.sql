@@ -8,6 +8,11 @@ CREATE TABLE access_types (
   access_type VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE adult_traumas (
+  adult_trauma_id SERIAL PRIMARY KEY,
+  trauma VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE armed_bystanders (
   armed_bystander_id SERIAL PRIMARY KEY,
   armed_bystander_type VARCHAR(100) NOT NULL
@@ -29,18 +34,23 @@ CREATE TABLE community_involvements (
 );
 
 CREATE TABLE crimes1 (
-    crimes1_id SERIAL PRIMARY KEY,
-    crime_type VARCHAR(100) NOT NULL
+  crimes1_id SERIAL PRIMARY KEY,
+  crime_type VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE crimes2 (
-    crimes2_id SERIAL PRIMARY KEY,
-    crime_type VARCHAR(100) NOT NULL
+  crimes2_id SERIAL PRIMARY KEY,
+  crime_type VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE criminal_justice_involvements (
   criminal_justice_involvement_id SERIAL PRIMARY KEY,
   involvement VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE crisis_timeframes (
+  crisis_timeframe_id SERIAL PRIMARY KEY,
+  timeframe VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE domestic_abuse_histories (
@@ -63,6 +73,11 @@ CREATE TABLE employment_types (
   employment_type_description VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE familial_mental_health_issues (
+  familial_mental_health_issues_id SERIAL PRIMARY KEY,
+  history VARCHAR(255) UNIQUE
+);
+
 CREATE TABLE genders (
   gender_id SERIAL PRIMARY KEY,
   gender VARCHAR(50) NOT NULL
@@ -76,6 +91,11 @@ CREATE TABLE hate_group_associations (
 CREATE TABLE locations (
   location_id SERIAL PRIMARY KEY,
   location_type VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE mental_illnesses (
+  mental_illness_id SERIAL PRIMARY KEY,
+  illness VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE military_branches (
@@ -99,13 +119,13 @@ CREATE TABLE played_violent_video_games (
 );
 
 CREATE TABLE races (
-    race_id SERIAL PRIMARY KEY,
-    race VARCHAR(50) NOT NULL
+  race_id SERIAL PRIMARY KEY,
+  race VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE regions (
-    region_id SERIAL PRIMARY KEY,
-    region VARCHAR(50) NOT NULL
+  region_id SERIAL PRIMARY KEY,
+  region VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE relationship_statuses (
@@ -114,8 +134,8 @@ CREATE TABLE relationship_statuses (
 );
 
 CREATE TABLE religions (
-    religion_id SERIAL PRIMARY KEY,
-    religion_name VARCHAR(50) NOT NULL
+  religion_id SERIAL PRIMARY KEY,
+  religion_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE school_performances (
@@ -123,24 +143,49 @@ CREATE TABLE school_performances (
   performance_category VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE socioeconomic_status (
+  socioeconomic_status_id SERIAL PRIMARY KEY,
+  socioeconomic_status VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE states (
-    state_id SERIAL PRIMARY KEY,
-    state VARCHAR(50) NOT NULL
+  state_id SERIAL PRIMARY KEY,
+  state VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE substance_abuse (
+  substance_abuse_id SERIAL PRIMARY KEY,
+  substance VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE suicidality (
+  suicidality_id SERIAL PRIMARY KEY,
+  suicidal_ideation VARCHAR(100)
+);
+
+CREATE TABLE triggering_events (
+  triggering_event_id SERIAL PRIMARY KEY,
+  event VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE victim_locations (
-    victim_location_id SERIAL PRIMARY KEY,
-    victim_location VARCHAR(50) NOT NULL
+  victim_location_id SERIAL PRIMARY KEY,
+  victim_location VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE victim_knew_shooter_statuses (
-    victim_knew_shooter_status_id SERIAL PRIMARY KEY,
-    victim_knew_shooter_status VARCHAR(10) UNIQUE NOT NULL
+  victim_knew_shooter_status_id SERIAL PRIMARY KEY,
+  victim_knew_shooter_status VARCHAR(10) UNIQUE NOT NULL
 );
 
 CREATE TABLE victim_relationships (
-    victim_relationship_id SERIAL PRIMARY KEY,
-    victim_relationship VARCHAR(50) NOT NULL
+  victim_relationship_id SERIAL PRIMARY KEY,
+  victim_relationship VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE voluntary_involuntary (
+  voluntary_id SERIAL PRIMARY KEY,
+  type VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE cases (
@@ -228,6 +273,7 @@ CREATE TABLE case_victims (
 
 CREATE TABLE violence_and_crimes (
   violence_and_crimes_id SERIAL PRIMARY KEY,
+  shooter_id INT UNIQUE,
   crimes1_id INT,
   crimes2_id INT,
   criminal_justice_involvement_id INT,
@@ -261,36 +307,33 @@ CREATE TABLE violence_and_crimes (
     REFERENCES played_violent_video_games(violent_video_game_id)
 );
 
-CREATE TABLE shooters (
-  shooter_id SERIAL PRIMARY KEY,
+CREATE TABLE shooter_demographics (
+  shooter_demographics_id SERIAL PRIMARY KEY,
+  shooter_id INT UNIQUE,
+  gender_id INT,
+  race_id INT,
+  age INT,
   birth_order_id INT,
+  height INT,
+  weight INT,
+  heterosexual BOOLEAN,
+  immigrant BOOLEAN,
+  children BOOLEAN,
+  number_of_siblings INT,
+  number_of_older_siblings INT,
+  number_of_younger_siblings INT,
+  relationship_status_id INT,
+  religion_id INT,
   community_involvement_id INT,
   violence_and_crimes_id INT,
   education_id INT,
   employment_type_id INT,
-  gender_id INT,
   military_branch_id INT,
   military_service_id INT,
-  race_id INT,
-  relationship_status_id INT,
-  religion_id INT,
   school_performance_id INT,
-  age INT,
-  children BOOLEAN,
   community_involvement_specified TEXT,
   employed BOOLEAN,
-  first_name VARCHAR(100),
-  height INT,
-  heterosexual BOOLEAN,
-  immigrant BOOLEAN,
-  last_name VARCHAR(100),
-  number_of_siblings INT,
-  older_siblings INT,
   school_performance_specified TEXT,
-  weight INT,
-  younger_siblings INT,
-  FOREIGN KEY (violence_and_crimes_id)
-    REFERENCES violence_and_crimes(violence_and_crimes_id),
   FOREIGN KEY (gender_id)
     REFERENCES genders(gender_id),
   FOREIGN KEY (race_id)
@@ -315,6 +358,106 @@ CREATE TABLE shooters (
     REFERENCES community_involvements(community_involvement_id)
 );
 
+CREATE TABLE childhood_traumas (
+    childhood_trauma_id SERIAL PRIMARY KEY,
+    shooter_id INT UNIQUE,
+    adult_trauma_id INT,
+    childhood_socioeconomic_status_id INT,
+    bullied BOOLEAN,
+    raised_by_single_parent BOOLEAN,
+    parental_separation_or_divorce BOOLEAN,
+    suicide_of_parent BOOLEAN,
+    death_of_parent BOOLEAN,
+    childhood_trauma BOOLEAN,
+    physical_abuse BOOLEAN,
+    sexual_abuse BOOLEAN,
+    emotional_abuse BOOLEAN,
+    neglect BOOLEAN,
+    mother_violently_treated BOOLEAN,
+    parent_substance_abuse BOOLEAN,
+    parent_criminal_record BOOLEAN,
+    family_member_incarcerated BOOLEAN,
+    FOREIGN KEY (adult_trauma_id)
+      REFERENCES adult_traumas(adult_trauma_id),
+    FOREIGN KEY (childhood_socioeconomic_status_id)
+      REFERENCES socioeconomic_status(socioeconomic_status_id)
+);
+
+CREATE TABLE signs_of_crisis (
+    signs_of_crisis_id SERIAL PRIMARY KEY,
+    shooter_id INT UNIQUE,
+    crisis_timeframe_id INT,
+    triggering_event_id INT,
+    abusive_behavior BOOLEAN,
+    inability_to_perform_daily_tasks BOOLEAN,
+    increased_agitation BOOLEAN,
+    notably_depressed_mood BOOLEAN,
+    rapid_mood_swings BOOLEAN,
+    signs_of_crisis BOOLEAN,
+    unusually_calm_or_happy BOOLEAN,
+    isolation BOOLEAN,
+    losing_touch_with_reality BOOLEAN,
+    paranoia BOOLEAN,
+    FOREIGN KEY (triggering_event_id)
+      REFERENCES triggering_events(triggering_event_id),
+    FOREIGN KEY (crisis_timeframe_id)
+      REFERENCES crisis_timeframes(crisis_timeframe_id)
+);
+
+CREATE TABLE health_and_mental_health (
+    health_and_mental_health_id SERIAL PRIMARY KEY,
+    shooter_id INT UNIQUE,
+    suicidality_id INT,
+    substance_abuse_id INT,
+    voluntary_involuntary_hospitalization INT,
+    voluntary_mandatory_counseling INT,
+    mental_illness_id INT,
+    familial_mental_health_issues_id INT,
+    hospitalization_for_psychiatric_reasons BOOLEAN,
+    prior_counseling BOOLEAN,
+    prescribed_psychiatric_medication BOOLEAN,
+    psychiatric_medication_specified TEXT,
+    treatment BOOLEAN,
+    fasd BOOLEAN,
+    autism_spectrum_disorder BOOLEAN,
+    health_issues BOOLEAN,
+    specify_health_issues TEXT,
+    head_injury BOOLEAN,
+    FOREIGN KEY (familial_mental_health_issues_id)
+      REFERENCES familial_mental_health_issues(familial_mental_health_issues_id),
+    FOREIGN KEY (mental_illness_id)  
+      REFERENCES mental_illnesses(mental_illness_id),
+    FOREIGN KEY (voluntary_involuntary_hospitalization)  
+      REFERENCES voluntary_involuntary(voluntary_id),
+    FOREIGN KEY (voluntary_mandatory_counseling) 
+      REFERENCES voluntary_involuntary(voluntary_id),
+    FOREIGN KEY (suicidality_id) 
+      REFERENCES suicidality(suicidality_id),
+    FOREIGN KEY (substance_abuse_id) 
+      REFERENCES substance_abuse(substance_abuse_id)
+);
+
+CREATE TABLE shooters (
+  shooter_id SERIAL PRIMARY KEY,
+  childhood_trauma_id INT UNIQUE,
+  health_and_mental_health_id INT UNIQUE,
+  shooter_demographics_id INT UNIQUE,
+  signs_of_crisis_id INT UNIQUE,
+  violence_and_crimes_id INT UNIQUE,
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  FOREIGN KEY (childhood_trauma_id)
+    REFERENCES childhood_traumas(childhood_trauma_id),
+  FOREIGN KEY (health_and_mental_health_id)
+    REFERENCES health_and_mental_health(health_and_mental_health_id),
+  FOREIGN KEY (shooter_demographics_id)
+    REFERENCES shooter_demographics(shooter_demographics_id),
+  FOREIGN KEY (signs_of_crisis_id)
+    REFERENCES signs_of_crisis(signs_of_crisis_id),
+  FOREIGN KEY (violence_and_crimes_id)
+    REFERENCES violence_and_crimes(violence_and_crimes_id)
+);
+
 CREATE TABLE case_shooters (
   case_id INT,
   shooter_id INT,
@@ -324,6 +467,7 @@ CREATE TABLE case_shooters (
   FOREIGN KEY (shooter_id)
     REFERENCES shooters(shooter_id)
 );
+
 
 -- CREATE INDEX idx_shooter_id ON Cases(ShooterID);
 
