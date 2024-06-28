@@ -18,6 +18,11 @@ CREATE TABLE armed_bystanders (
   armed_bystander_type VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE attempt_to_flee (
+    attempt_to_flee_id SERIAL PRIMARY KEY,
+    attempt_to_flee VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE birth_orders (
   birth_order_id SERIAL PRIMARY KEY,
   birth_order_description VARCHAR(100) NOT NULL
@@ -46,6 +51,11 @@ CREATE TABLE crimes2 (
 CREATE TABLE criminal_justice_involvements (
   criminal_justice_involvement_id SERIAL PRIMARY KEY,
   involvement VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE criminal_sentence (
+  criminal_sentence_id SERIAL PRIMARY KEY,
+  criminal_sentence VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE crisis_timeframes (
@@ -88,6 +98,16 @@ CREATE TABLE hate_group_associations (
   hate_group_type VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE insanity_defense (
+  insanity_defense_id SERIAL PRIMARY KEY,
+  insanity_defense VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE known_prejudices (
+    known_prejudices_id INT PRIMARY KEY,
+    prejudice VARCHAR(100)
+);
+
 CREATE TABLE locations (
   location_id SERIAL PRIMARY KEY,
   location_type VARCHAR(100) NOT NULL
@@ -108,6 +128,16 @@ CREATE TABLE military_services (
   military_service_description VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE motive_other (
+    motive_other_id INT PRIMARY KEY,
+    motive VARCHAR(100)
+);
+
+CREATE TABLE on_scene_outcome (
+    on_scene_outcome_id INT PRIMARY KEY,
+    on_scene_outcome VARCHAR(100)
+);
+
 CREATE TABLE physical_altercations (
   physical_altercation_id SERIAL PRIMARY KEY,
   altercation VARCHAR(100) NOT NULL
@@ -123,6 +153,11 @@ CREATE TABLE races (
   race VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE racism (
+  racism_id SERIAL PRIMARY KEY,
+  racism_type VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE regions (
   region_id SERIAL PRIMARY KEY,
   region VARCHAR(50) NOT NULL
@@ -136,6 +171,16 @@ CREATE TABLE relationship_statuses (
 CREATE TABLE religions (
   religion_id SERIAL PRIMARY KEY,
   religion_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE religious_hate (
+    religious_hate_id INT PRIMARY KEY,
+    religions_hate_type VARCHAR(100)
+);
+
+CREATE TABLE role_of_psychosis (
+    role_of_psychosis_id INT PRIMARY KEY,
+    description VARCHAR(150)
 );
 
 CREATE TABLE school_performances (
@@ -186,6 +231,11 @@ CREATE TABLE victim_relationships (
 CREATE TABLE voluntary_involuntary (
   voluntary_id SERIAL PRIMARY KEY,
   type VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE who_killed_shooter_on_scene (
+  who_killed_shooter_on_scene_id SERIAL PRIMARY KEY,
+  who_killed_shooter_on_scene VARCHAR(50) UNIQUE
 );
 
 CREATE TABLE cases (
@@ -404,6 +454,35 @@ CREATE TABLE signs_of_crisis (
       REFERENCES crisis_timeframes(crisis_timeframe_id)
 );
 
+CREATE TABLE grievances_and_motivations (
+    grievances_and_motivations_id SERIAL PRIMARY KEY,
+    shooter_id INT UNIQUE,
+    known_prejudices_id INT,
+    racism_id INT,
+    religious_hate_id INT,
+    misogyny BOOLEAN,
+    homophobia BOOLEAN,
+    employment_issue BOOLEAN,
+    economic_issue BOOLEAN,
+    legal_issue BOOLEAN,
+    relationship_issues BOOLEAN,
+    interpersonal_conflict BOOLEAN,
+    fame_seeking BOOLEAN,
+    motive_other_id INT,
+    motive_unknown BOOLEAN,
+    role_of_psychosis_id INT,
+    FOREIGN KEY (known_prejudices_id)
+      REFERENCES known_prejudices(known_prejudices_id),
+    FOREIGN KEY (racism_id) 
+      REFERENCES racism(racism_id),
+    FOREIGN KEY (religious_hate_id)
+      REFERENCES religious_hate(religious_hate_id),
+    FOREIGN KEY (motive_other_id)
+      REFERENCES motive_other(motive_other_id),
+    FOREIGN KEY (role_of_psychosis_id)
+      REFERENCES role_of_psychosis(role_of_psychosis_id)
+);
+
 CREATE TABLE health_and_mental_health (
     health_and_mental_health_id SERIAL PRIMARY KEY,
     shooter_id INT UNIQUE,
@@ -440,6 +519,7 @@ CREATE TABLE health_and_mental_health (
 CREATE TABLE shooters (
   shooter_id SERIAL PRIMARY KEY,
   childhood_trauma_id INT UNIQUE,
+  grievances_and_motivations_id INT UNIQUE,
   health_and_mental_health_id INT UNIQUE,
   shooter_demographics_id INT UNIQUE,
   signs_of_crisis_id INT UNIQUE,
@@ -448,6 +528,8 @@ CREATE TABLE shooters (
   last_name VARCHAR(100),
   FOREIGN KEY (childhood_trauma_id)
     REFERENCES childhood_traumas(childhood_trauma_id),
+  FOREIGN KEY (grievances_and_motivations_id)
+    REFERENCES grievances_and_motivations(grievances_and_motivations_id),
   FOREIGN KEY (health_and_mental_health_id)
     REFERENCES health_and_mental_health(health_and_mental_health_id),
   FOREIGN KEY (shooter_demographics_id)
@@ -468,6 +550,28 @@ CREATE TABLE case_shooters (
     REFERENCES shooters(shooter_id)
 );
 
+CREATE TABLE case_shooter_resolutions (
+  case_shooter_resolution_id SERIAL PRIMARY KEY,
+  case_id INT,
+  shooter_id INT,
+  on_scene_outcome_id INT,
+  who_killed_shooter_on_scene_id INT,
+  attempt_to_flee_id INT,
+  insanity_defense_id INT,
+  criminal_sentence_id INT,
+  FOREIGN KEY (case_id, shooter_id)
+    REFERENCES case_shooters(case_id, shooter_id),
+  FOREIGN KEY (on_scene_outcome_id)
+    REFERENCES on_scene_outcome(on_scene_outcome_id),
+  FOREIGN KEY (who_killed_shooter_on_scene_id)
+    REFERENCES who_killed_shooter_on_scene(who_killed_shooter_on_scene_id),
+  FOREIGN KEY (attempt_to_flee_id)
+    REFERENCES attempt_to_flee(attempt_to_flee_id),
+  FOREIGN KEY (insanity_defense_id)
+    REFERENCES insanity_defense(insanity_defense_id),
+  FOREIGN KEY (criminal_sentence_id)
+    REFERENCES criminal_sentence(criminal_sentence_id)
+);
 
 -- CREATE INDEX idx_shooter_id ON Cases(ShooterID);
 
