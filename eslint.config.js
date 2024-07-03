@@ -15,7 +15,7 @@ export default [
       'class-methods-use-this': 'off',
       'comma-dangle': 'off',
       'object-curly-newline': 'off',
-      'operator-linebreak': 'off',
+      'operator-linebreak': 'before',
       'implicit-arrow-linebreak': 'off',
       'function-paren-newline': 'off',
       'import/no-extraneous-dependencies': 'off',
