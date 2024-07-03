@@ -6,7 +6,7 @@ const importFirearms = async (pool) => {
   try {
     const insertPromises = [];
 
-    fs.createReadStream('./sql_imports/firearms.csv')
+    fs.createReadStream('./sql_imports/csv/firearms.csv')
       .pipe(csv())
       .on('data', async (row) => {
         try {

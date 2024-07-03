@@ -5,12 +5,12 @@ const importData = async (pool, filePath, processRow) => {
   try {
     const insertPromises = [];
 
-    const stream = fs.createReadStream(filePath)
-      .on('error', (error) => {
-        console.error('Error reading file:', error);
-      });
+    const stream = fs.createReadStream(filePath).on('error', (error) => {
+      console.error('Error reading file:', error);
+    });
 
-    stream.pipe(csv())
+    stream
+      .pipe(csv())
       .on('data', async (row) => {
         try {
           const results = await processRow(row, pool);
