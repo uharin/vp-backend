@@ -1,4 +1,4 @@
-INSERT INTO familial_mental_health_issues (familial_mental_health_issues_id, history)
+INSERT INTO family_mental_health_issues (family_mental_health_issues_id, history)
 VALUES
   (1, 'No evidence'),
   (2, 'Parents had mental health issues'),

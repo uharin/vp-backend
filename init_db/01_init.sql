@@ -83,9 +83,14 @@ CREATE TABLE employment_types (
   employment_type_description VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE familial_mental_health_issues (
-  familial_mental_health_issues_id SERIAL PRIMARY KEY,
+CREATE TABLE family_mental_health_issues (
+  family_mental_health_issues_id SERIAL PRIMARY KEY,
   history VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE firearm_proficiency (
+  firearm_proficiency_id SERIAL PRIMARY KEY,
+  firearm_proficiency VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE genders (
@@ -327,8 +332,6 @@ CREATE TABLE violence_and_crimes (
   crimes1_id INT,
   crimes2_id INT,
   criminal_justice_involvement_id INT,
-  domestic_abuse_id INT,
-  domestic_abuse_history_id INT,
   hate_group_association_id INT,
   physical_altercation_id INT,
   violent_video_games_id INT,
@@ -345,10 +348,6 @@ CREATE TABLE violence_and_crimes (
     REFERENCES crimes2(crimes2_id),
   FOREIGN KEY (criminal_justice_involvement_id)
     REFERENCES criminal_justice_involvements(criminal_justice_involvement_id),
-  FOREIGN KEY (domestic_abuse_id)
-    REFERENCES domestic_abuses(domestic_abuse_id),
-  FOREIGN KEY (domestic_abuse_history_id)
-    REFERENCES domestic_abuse_histories(domestic_abuse_history_id),
   FOREIGN KEY (hate_group_association_id)
     REFERENCES hate_group_associations(hate_group_association_id),
   FOREIGN KEY (physical_altercation_id)
@@ -438,6 +437,7 @@ CREATE TABLE signs_of_crisis (
     shooter_id INT UNIQUE,
     crisis_timeframe_id INT,
     triggering_event_id INT,
+    specify_signs_of_crisis TEXT,
     abusive_behavior BOOLEAN,
     inability_to_perform_daily_tasks BOOLEAN,
     increased_agitation BOOLEAN,
@@ -465,7 +465,7 @@ CREATE TABLE grievances_and_motivations (
     employment_issue BOOLEAN,
     economic_issue BOOLEAN,
     legal_issue BOOLEAN,
-    relationship_issues BOOLEAN,
+    relationship_issue BOOLEAN,
     interpersonal_conflict BOOLEAN,
     fame_seeking BOOLEAN,
     motive_other_id INT,
@@ -491,7 +491,7 @@ CREATE TABLE health_and_mental_health (
     voluntary_involuntary_hospitalization INT,
     voluntary_mandatory_counseling INT,
     mental_illness_id INT,
-    familial_mental_health_issues_id INT,
+    family_mental_health_issues_id INT,
     hospitalization_for_psychiatric_reasons BOOLEAN,
     prior_counseling BOOLEAN,
     prescribed_psychiatric_medication BOOLEAN,
@@ -501,9 +501,10 @@ CREATE TABLE health_and_mental_health (
     autism_spectrum_disorder BOOLEAN,
     health_issues BOOLEAN,
     specify_health_issues TEXT,
+    medication_category TEXT,
     head_injury BOOLEAN,
-    FOREIGN KEY (familial_mental_health_issues_id)
-      REFERENCES familial_mental_health_issues(familial_mental_health_issues_id),
+    FOREIGN KEY (family_mental_health_issues_id)
+      REFERENCES family_mental_health_issues(family_mental_health_issues_id),
     FOREIGN KEY (mental_illness_id)  
       REFERENCES mental_illnesses(mental_illness_id),
     FOREIGN KEY (voluntary_involuntary_hospitalization)  
@@ -571,6 +572,45 @@ CREATE TABLE case_shooter_resolutions (
     REFERENCES insanity_defense(insanity_defense_id),
   FOREIGN KEY (criminal_sentence_id)
     REFERENCES criminal_sentence(criminal_sentence_id)
+);
+
+CREATE TABLE case_shooter_weapons (
+  case_shooter_weapons_id SERIAL PRIMARY KEY,
+  case_id INT,
+  shooter_id INT,
+  firearm_proficiency_id INT,
+  interest_in_firearms BOOLEAN,
+  other_weaposn_or_gear BOOLEAN,
+  specify_weapons_or_gear TEXT,
+  total_weapons_brought_to_scene INT,
+  FOREIGN KEY (case_id, shooter_id)
+    REFERENCES case_shooters(case_id, shooter_id),
+  FOREIGN KEY (firearm_proficiency_id)
+    REFERENCES firearm_proficiency(firearm_proficiency_id)
+);
+
+-- Junction table because database columns from Google Sheet have multiple values listed
+
+CREATE TABLE shooter_domestic_abuses (
+  violence_and_crimes_id INT,
+  domestic_abuse_id INT,
+  PRIMARY KEY (violence_and_crimes_id, domestic_abuse_id),
+  FOREIGN KEY (violence_and_crimes_id)    
+    REFERENCES violence_and_crimes(violence_and_crimes_id),
+  FOREIGN KEY (domestic_abuse_id)
+    REFERENCES domestic_abuses(domestic_abuse_id)
+);
+
+-- Junction table because database columns from Google Sheet have multiple values listed
+
+CREATE TABLE shooter_domestic_abuse_histories (
+  violence_and_crimes_id INT,
+  domestic_abuse_history_id INT,
+  PRIMARY KEY (violence_and_crimes_id, domestic_abuse_history_id),
+  FOREIGN KEY (violence_and_crimes_id) 
+    REFERENCES violence_and_crimes(violence_and_crimes_id),
+  FOREIGN KEY (domestic_abuse_history_id) 
+    REFERENCES domestic_abuse_histories(domestic_abuse_history_id)
 );
 
 -- CREATE INDEX idx_shooter_id ON Cases(ShooterID);
