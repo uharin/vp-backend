@@ -1,10 +1,10 @@
 import { convertToBoolean, parseValue } from '../handlers/utils.js';
 
-const insertViolenceAndCrimes = async (row, pool) => {
+const insertViolenceAndCrimes = async (row, pool, shooter_id) => {
   const query = `
     INSERT INTO violence_and_crimes (
-      known_to_police_or_fbi, criminal_record, crimes1_id, crimes2_id, criminal_justice_involvement_id, physical_altercation_id, animal_abuse, sexual_offenses, gang_association, terror_group_association, hate_group_association_id, violent_video_games_id, bully
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING violence_and_crimes_id
+      shooter_id, known_to_police_or_fbi, criminal_record, crimes1_id, crimes2_id, criminal_justice_involvement_id, physical_altercation_id, animal_abuse, sexual_offenses, gang_association, terror_group_association, hate_group_association_id, violent_video_games_id, bully
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING violence_and_crimes_id
   `;
   const knownToPoliceOrFBI = convertToBoolean(row['Known to Police or FBI']);
   const criminalRecord = convertToBoolean(row['Criminal Record']);
@@ -23,6 +23,7 @@ const insertViolenceAndCrimes = async (row, pool) => {
   const bully = convertToBoolean(row['Bully']);
 
   const values = [
+    shooter_id,
     knownToPoliceOrFBI,
     criminalRecord,
     crimes1Id,

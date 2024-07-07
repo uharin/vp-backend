@@ -1,14 +1,15 @@
 import { convertToBoolean, parseValue } from '../handlers/utils.js';
 
-const insertHealthAndMentalHealth = async (row, pool) => {
+const insertHealthAndMentalHealth = async (row, pool, shooter_id) => {
   const query = `
     INSERT INTO health_and_mental_health (
-      mental_illness_id, fasd, family_mental_health_issues_id, autism_spectrum_disorder, substance_abuse_id, health_issues, specify_health_issues, head_injury, prescribed_psychiatric_medication, psychiatric_medication_specified, medication_category, treatment,
+      shooter_id, mental_illness_id, fasd, family_mental_health_issues_id, autism_spectrum_disorder, substance_abuse_id, health_issues, specify_health_issues, head_injury, prescribed_psychiatric_medication, psychiatric_medication_specified, medication_category, treatment,
       voluntary_involuntary_hospitalization, suicidality_id, prior_counseling, voluntary_mandatory_counseling
 
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING health_and_mental_health_id
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING health_and_mental_health_id
   `;
   const values = [
+    shooter_id,
     parseValue(row['Mental Illness'], parseInt),
     convertToBoolean(row['FASD (Fetal Alcohol Spectrum Disorder)']),
     parseValue(row['Known Family Mental Health History'], parseInt),

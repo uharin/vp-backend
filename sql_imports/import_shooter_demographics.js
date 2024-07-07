@@ -5,13 +5,14 @@ import { convertToBoolean, parseValue } from '../handlers/utils.js';
   By default, we offset them by 1 in parseValue function. So if a value does *not* need to be offset, we must declare that here.
 */
 
-const insertShooterDemographics = async (row, pool) => {
+const insertShooterDemographics = async (row, pool, shooter_id) => {
   const query = `
     INSERT INTO shooter_demographics (
-      age, gender_id, race_id, height, weight, immigrant, heterosexual, religion_id, education_id, school_performance_id, school_performance_specified, birth_order_id, number_of_siblings, number_of_older_siblings, number_of_younger_siblings, relationship_status_id, children, employed, employment_type_id, military_service_id, military_branch_id, community_involvement_id, community_involvement_specified
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING shooter_demographics_id
+      shooter_id, age, gender_id, race_id, height, weight, immigrant, heterosexual, religion_id, education_id, school_performance_id, school_performance_specified, birth_order_id, number_of_siblings, number_of_older_siblings, number_of_younger_siblings, relationship_status_id, children, employed, employment_type_id, military_service_id, military_branch_id, community_involvement_id, community_involvement_specified
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24) RETURNING shooter_demographics_id
   `;
   const values = [
+    shooter_id,
     parseValue(row['Age'], parseInt, { offset: 0 }),
     parseValue(row['Gender'], parseInt, { offset: row['Gender'] === '3' ? -1 : 1 }), // Conditional offset is because there is no '2' value in the data, only 0, 1, and 3
     parseValue(row['Race'], parseInt),
