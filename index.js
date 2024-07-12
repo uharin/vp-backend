@@ -4,6 +4,7 @@ import { connectToDatabase, pool } from './db/db.js';
 import importCases from './sql_imports/import_cases.js';
 import importVictims from './sql_imports/import_victims.js';
 import importShooters from './sql_imports/import_shooters.js';
+import importFirearms from './sql_imports/import_firearms.js';
 
 const app = express();
 
@@ -36,3 +37,4 @@ connectToDatabase()
 importCases(pool);
 importVictims(pool);
 importShooters(pool);
+importFirearms(pool);

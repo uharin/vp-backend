@@ -28,9 +28,41 @@ CREATE TABLE birth_orders (
   birth_order_description VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE caliber (
+    caliber_id SERIAL PRIMARY KEY,
+    size VARCHAR(50) NOT NULL,
+    description TEXT
+);
+
 CREATE TABLE civic_designations (
   civic_designation_id SERIAL PRIMARY KEY,
   civic_designation_type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE firearm_classifications (
+    firearm_classification_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE firearm_purchase_timeframes (
+    firearm_purchase_timeframe_id SERIAL PRIMARY KEY,
+    timeframe VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE firearm_illegal_purchases (
+    firearm_illegal_id SERIAL PRIMARY KEY,
+    status VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE firearm_legal_purchases (
+    firearm_legal_id SERIAL PRIMARY KEY,
+    status VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE firearm_thefts (
+    firearm_theft_id SERIAL PRIMARY KEY,
+    status VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE community_involvements (
@@ -116,6 +148,11 @@ CREATE TABLE known_prejudices (
 CREATE TABLE locations (
   location_id SERIAL PRIMARY KEY,
   location_type VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE make_and_model (
+    make_and_model_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE mental_illnesses (
@@ -293,6 +330,34 @@ CREATE TABLE cases (
     REFERENCES victim_locations(victim_location_id),
   FOREIGN KEY (armed_bystander_id)
     REFERENCES armed_bystanders(armed_bystander_id)
+);
+
+CREATE TABLE firearms (
+  firearm_id SERIAL PRIMARY KEY,
+  caliber_id VARCHAR(50),
+  firearm_classification_id VARCHAR(255),
+  firearm_illegal_purchase_id INT,
+  firearm_legal_purchase_id INT,
+  firearm_purchase_timeframe_id INT,
+  firearm_theft_id INT,
+  make_and_model VARCHAR(255),
+  used_in_shooting BOOLEAN,
+  modified BOOLEAN,
+  large_capacity_magazine BOOLEAN,
+  extended_magazine BOOLEAN,
+  assembled_with_legal_parts BOOLEAN,
+  gifted BOOLEAN,
+  unknown BOOLEAN
+);
+
+CREATE TABLE case_firearms (
+  case_id INT NOT NULL,
+  firearm_id INT NOT NULL,
+  PRIMARY KEY (case_id, firearm_id),
+  FOREIGN KEY (case_id)
+    REFERENCES cases(case_id),
+  FOREIGN KEY (firearm_id)
+    REFERENCES firearms(firearm_id)
 );
 
 CREATE TABLE victims (
@@ -612,34 +677,3 @@ CREATE TABLE shooter_domestic_abuse_histories (
   FOREIGN KEY (domestic_abuse_history_id) 
     REFERENCES domestic_abuse_histories(domestic_abuse_history_id)
 );
-
--- CREATE INDEX idx_shooter_id ON Cases(ShooterID);
-
--- CREATE TABLE firearms (
---     FirearmID SERIAL PRIMARY KEY,
---     CaseID INT REFERENCES Cases(CaseID),
---     MakeAndModel VARCHAR(100),
---     Classification VARCHAR(50),
---     Caliber VARCHAR(20),
---     UsedInShooting BOOLEAN,
---     Modified BOOLEAN,
---     LargeCapacityMagazine BOOLEAN,
---     ExtendedMagazine BOOLEAN,
---     WhenObtained DATE
--- );
-
--- CREATE INDEX idx_case_id_firearms ON Firearms(CaseID);
-
--- CREATE TABLE acquisition_values (
---     ValueID SERIAL PRIMARY KEY,
---     AcquisitionCategory VARCHAR(50),
---     ValueName VARCHAR(100)
--- );
-
--- CREATE TABLE firearm_acquisition_methods (
---     MethodID SERIAL PRIMARY KEY,
---     FirearmID INT REFERENCES Firearms(FirearmID),
---     AcquisitionCategory VARCHAR(50),
---     ValueID INT REFERENCES AcquisitionValues(ValueID),
---     FOREIGN KEY (FirearmID) REFERENCES Firearms(FirearmID)
--- );
