@@ -334,30 +334,42 @@ CREATE TABLE cases (
 
 CREATE TABLE firearms (
   firearm_id SERIAL PRIMARY KEY,
-  caliber_id VARCHAR(50),
-  firearm_classification_id VARCHAR(255),
-  firearm_illegal_purchase_id INT,
-  firearm_legal_purchase_id INT,
+  make_and_model VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE case_firearms (
+  case_firearm_id SERIAL PRIMARY KEY,
+  case_id INT NOT NULL,
+  firearm_id INT NOT NULL,
+  caliber_id INT,
+  firearm_classification_id INT,
+  firearm_illegal_id INT,
+  firearm_legal_id INT,
   firearm_purchase_timeframe_id INT,
   firearm_theft_id INT,
-  make_and_model VARCHAR(255),
   used_in_shooting BOOLEAN,
   modified BOOLEAN,
   large_capacity_magazine BOOLEAN,
   extended_magazine BOOLEAN,
   assembled_with_legal_parts BOOLEAN,
   gifted BOOLEAN,
-  unknown BOOLEAN
-);
-
-CREATE TABLE case_firearms (
-  case_id INT NOT NULL,
-  firearm_id INT NOT NULL,
-  PRIMARY KEY (case_id, firearm_id),
+  unknown BOOLEAN,
   FOREIGN KEY (case_id)
     REFERENCES cases(case_id),
   FOREIGN KEY (firearm_id)
-    REFERENCES firearms(firearm_id)
+    REFERENCES firearms(firearm_id),
+  FOREIGN KEY (caliber_id)
+    REFERENCES caliber(caliber_id),
+  FOREIGN KEY (firearm_classification_id)
+    REFERENCES firearm_classifications(firearm_classification_id),
+  FOREIGN KEY (firearm_illegal_id)
+    REFERENCES firearm_illegal_purchases(firearm_illegal_id),
+  FOREIGN KEY (firearm_legal_id)
+    REFERENCES firearm_legal_purchases(firearm_legal_id),
+  FOREIGN KEY (firearm_theft_id)
+    REFERENCES firearm_thefts(firearm_theft_id),
+  FOREIGN KEY (firearm_purchase_timeframe_id)
+    REFERENCES firearm_purchase_timeframes(firearm_purchase_timeframe_id)
 );
 
 CREATE TABLE victims (
