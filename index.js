@@ -1,4 +1,9 @@
 import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import appRouter from './routes/router.js';
 import { connectToDatabase, pool } from './db/db.js';
 import importCases from './sql_imports/import_cases.js';
@@ -8,12 +13,27 @@ import importFirearms from './sql_imports/import_firearms.js';
 
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// CORS configuration
+const corsOptions = {
+  origin: 'http://frontend:3000',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+  allowedHeaders: 'Content-Type, Authorization', 
+};
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
+
 // Middleware
 app.use(express.json());
-
-app.use('/api/v1/cases', appRouter);
+app.use(helmet());
+app.use(cors(corsOptions));
+app.use('/api/v1', appRouter);
 
 const PORT = process.env.API_PORT || 3001;
+const initDB = process.env.DB_INITIALIZED;
 
 // Connect to PostGres database
 connectToDatabase()
@@ -34,7 +54,12 @@ connectToDatabase()
     process.exit(1);
   });
 
-importCases(pool);
-importVictims(pool);
-importShooters(pool);
-importFirearms(pool);
+  /* 
+    Add in better logic later, for now set !initDB to true if initializing DB for first time
+  */
+  if (!initDB) {
+    importCases(pool);
+    importVictims(pool);
+    importShooters(pool);
+    importFirearms(pool);
+  }

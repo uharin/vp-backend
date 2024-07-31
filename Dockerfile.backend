@@ -6,6 +6,7 @@ WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
 COPY package*.json .
+COPY ./wait-for-it.sh /usr/src/app
 
 # Debugging: List files in /usr/src/app to verify package.json is copied
 RUN ls -la /usr/src/app
