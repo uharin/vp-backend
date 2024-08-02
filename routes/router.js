@@ -1,12 +1,17 @@
 import { Router } from 'express';
-import { getAllCases, getCase } from '../db/queries.js';
+import { getCases, getCase } from '../db/queries/cases-queries.js';
+import { getShooters, getShooter } from '../db/queries/shooters-queries.js';
 
 const appRouter = Router();
 
-appRouter.get('/', getAllCases);
+appRouter.get('/', getCases);
 
-appRouter.get('/cases', getAllCases);
-
+/* Cases */
+appRouter.get('/cases', getCases);
 appRouter.get('/cases/:id', getCase);
+
+/* Shooters */
+appRouter.get('/shooters', getShooters);
+appRouter.get('/shooters/:id', getShooter);
 
 export default appRouter;
