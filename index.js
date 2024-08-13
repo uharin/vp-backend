@@ -2,17 +2,20 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { connectToDatabase } from './db/db.js';
-import appRouter from './routes/router.js';
 import { errorHandler } from './handlers/errors.js'
+import appRouter from './routes/router.js';
 import importAllData from './sql_imports/import_all_data.js'
 
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const swaggerDocument = YAML.load("./swagger.yaml");
 
 // CORS configuration
 const corsOptions = {
@@ -30,7 +33,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 app.use(helmet());
 app.use(cors(corsOptions));
-app.use('/api/v1', appRouter);
+app.use('/api/v1', appRouter); // API routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Swagger API doc route
 app.use(errorHandler);
 
 // Connect to PostGres database

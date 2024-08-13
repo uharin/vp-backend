@@ -1,0 +1,133 @@
+openapi: "3.0.0"
+info:
+  title: "Express API Documentation"
+  description: "API documentation for my Express application"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:3001"
+    description: "Development server"
+paths:
+  /user:
+    get:
+      summary: "Retrieve a list of users"
+      description: "Retrieve a list of users from the database"
+      responses:
+        '200':
+          description: "A list of users"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: "The user ID"
+                      example: 1
+                    name:
+                      type: string
+                      description: "The user's name"
+                      example: "John Doe"
+  /cases:
+    get:
+      summary: "Retrieve a list of cases"
+      description: "Retrieve a list of cases from the database"
+      responses:
+        '200':
+          description: "A list of cases"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: "The case ID"
+                      example: 1
+                    caseName:
+                      type: string
+                      description: "The name of the case"
+                      example: "Case Name Example"
+  /cases/{id}:
+    get:
+      summary: "Retrieve a specific case"
+      description: "Retrieve details of a specific case by its ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the case to retrieve"
+      responses:
+        '200':
+          description: "Details of the specific case"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: "The case ID"
+                    example: 1
+                  caseName:
+                    type: string
+                    description: "The name of the case"
+                    example: "Case Name Example"
+        '404':
+          description: "Case not found"
+  /shooters:
+    get:
+      summary: "Retrieve a list of shooters"
+      description: "Retrieve a list of shooters from the database"
+      responses:
+        '200':
+          description: "A list of shooters"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: "The shooter ID"
+                      example: 1
+                    shooterName:
+                      type: string
+                      description: "The name of the shooter"
+                      example: "Shooter Name Example"
+  /shooters/{id}:
+    get:
+      summary: "Retrieve a specific shooter"
+      description: "Retrieve details of a specific shooter by its ID"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the shooter to retrieve"
+      responses:
+        '200':
+          description: "Details of the specific shooter"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: "The shooter ID"
+                    example: 1
+                  shooterName:
+                    type: string
+                    description: "The name of the shooter"
+                    example: "Shooter Name Example"
+        '404':
+          description: "Shooter not found"
