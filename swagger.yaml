@@ -7,28 +7,6 @@ servers:
   - url: "http://localhost:3001"
     description: "Development server"
 paths:
-  /user:
-    get:
-      summary: "Retrieve a list of users"
-      description: "Retrieve a list of users from the database"
-      responses:
-        '200':
-          description: "A list of users"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: "The user ID"
-                      example: 1
-                    name:
-                      type: string
-                      description: "The user's name"
-                      example: "John Doe"
   /cases:
     get:
       summary: "Retrieve a list of cases"
@@ -43,14 +21,22 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
-                      type: integer
-                      description: "The case ID"
-                      example: 1
-                    caseName:
+                    latitude:
                       type: string
-                      description: "The name of the case"
-                      example: "Case Name Example"
+                      description: "The latitude coordinate for the case's location"
+                      example: "41.12518400"
+                    longitude:
+                      type: string
+                      description: "The longitude coordinate for the case's location"
+                      example: "-77.45187800"
+                    number_injured:
+                      type: integer
+                      description: "The number of victims injured in the case"
+                      example: 5
+                    number_killed:
+                      type: integer
+                      description: "The number of victims killed in the case"
+                      example: 6
   /cases/{id}:
     get:
       summary: "Retrieve a specific case"
@@ -70,14 +56,139 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  case_id:
                     type: integer
                     description: "The case ID"
                     example: 1
-                  caseName:
+                  full_date:
                     type: string
-                    description: "The name of the case"
-                    example: "Case Name Example"
+                    format: date-time
+                    description: "Full date and time of the incident"
+                    example: "1966-08-01T00:00:00.000Z"
+                  day_of_week:
+                    type: string
+                    description: "Day of the week"
+                    example: "Monday"
+                  day:
+                    type: integer
+                    description: "Day of the month"
+                    example: 1
+                  month:
+                    type: integer
+                    description: "Month of the year"
+                    example: 8
+                  year:
+                    type: integer
+                    description: "Year of the incident"
+                    example: 1966
+                  street_number:
+                    type: string
+                    description: "Street number"
+                    example: "110"
+                  street_name:
+                    type: string
+                    description: "Street name"
+                    example: "Inner Campus Dr"
+                  city:
+                    type: string
+                    description: "City name"
+                    example: "Austin"
+                  county:
+                    type: string
+                    description: "County name"
+                    example: "Travis County"
+                  zip_code:
+                    type: string
+                    description: "ZIP code"
+                    example: "78705"
+                  latitude:
+                    type: string
+                    description: "Latitude coordinate"
+                    example: "30.28605800"
+                  longitude:
+                    type: string
+                    description: "Longitude coordinate"
+                    example: "-97.73935000"
+                  state_id:
+                    type: integer
+                    description: "State ID"
+                    example: 43
+                  region_id:
+                    type: integer
+                    description: "Region ID"
+                    example: 1
+                  civic_designation_id:
+                    type: integer
+                    description: "Civic designation ID"
+                    example: 1
+                  metropolitan:
+                    type: boolean
+                    description: "Whether the incident occurred in a metropolitan area"
+                    example: true
+                  location_id:
+                    type: integer
+                    description: "Location ID"
+                    example: 2
+                  location_specifics:
+                    type: string
+                    description: "Specific location details"
+                    example: "University of Texas"
+                  insider:
+                    type: boolean
+                    description: "Whether the perpetrator was an insider"
+                    example: true
+                  access_type_id:
+                    type: integer
+                    description: "Access type ID"
+                    example: 3
+                  access_method_id:
+                    type: integer
+                    description: "Access method ID"
+                    example: 1
+                  victim_location_id:
+                    type: integer
+                    description: "Victim location ID"
+                    example: 3
+                  workplace_shooting:
+                    type: boolean
+                    description: "Whether it was a workplace shooting"
+                    example: false
+                  multiple_locations:
+                    type: boolean
+                    description: "Whether the incident occurred at multiple locations"
+                    example: true
+                  other_location_specified:
+                    type: string
+                    description: "Other location specified"
+                    example: "Shooter's home"
+                  armed_person_on_scene:
+                    type: boolean
+                    description: "Whether there was an armed person on scene"
+                    example: true
+                  armed_bystander_id:
+                    type: integer
+                    description: "Armed bystander ID"
+                    example: 3
+                  number_killed:
+                    type: integer
+                    description: "Number of people killed"
+                    example: 15
+                  number_injured:
+                    type: integer
+                    description: "Number of people injured"
+                    example: 31
+                  family_member_victim:
+                    type: boolean
+                    description: "Whether a family member was a victim"
+                    example: true
+                  romantic_partner_victim:
+                    type: boolean
+                    description: "Whether a romantic partner was a victim"
+                    example: true
+                  kidnapping_hostage_situation:
+                    type: boolean
+                    description: "Whether it was a kidnapping or hostage situation"
+                    example: false
         '404':
           description: "Case not found"
   /shooters:
@@ -94,14 +205,58 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
-                      type: integer
-                      description: "The shooter ID"
-                      example: 1
-                    shooterName:
+                    status:
                       type: string
-                      description: "The name of the shooter"
-                      example: "Shooter Name Example"
+                      description: "Status of the request"
+                      example: "success"
+                    data:
+                      type: object
+                      properties:
+                        cases:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              shooter_id:
+                                type: integer
+                                description: "The shooter's ID"
+                                example: 6
+                              childhood_trauma_id:
+                                type: integer
+                                description: "ID representing childhood trauma"
+                                example: 8
+                              grievances_and_motivations_id:
+                                type: integer
+                                description: "ID representing grievances and motivations"
+                                example: 6
+                              health_and_mental_health_id:
+                                type: integer
+                                description: "ID representing health and mental health"
+                                example: 14
+                              shooter_demographics_id:
+                                type: integer
+                                description: "ID representing shooter demographics"
+                                example: 12
+                              signs_of_crisis_id:
+                                type: integer
+                                description: "ID representing signs of crisis"
+                                example: 6
+                              violence_and_crimes_id:
+                                type: integer
+                                description: "ID representing violence and crimes"
+                                example: 17
+                              first_name:
+                                type: string
+                                description: "Shooter's first name"
+                                example: "Gan Fong"
+                              last_name:
+                                type: string
+                                description: "Shooter's last name"
+                                example: "Chin"
+                        count:
+                          type: integer
+                          description: "Total number of cases"
+                          example: 197
   /shooters/{id}:
     get:
       summary: "Retrieve a specific shooter"
@@ -115,19 +270,431 @@ paths:
           description: "The ID of the shooter to retrieve"
       responses:
         '200':
-          description: "Details of the specific shooter"
+          description: "Details of the shooter"
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
+                  shooter_id:
                     type: integer
-                    description: "The shooter ID"
+                    description: "The shooter's ID"
                     example: 1
-                  shooterName:
+                  first_name:
                     type: string
-                    description: "The name of the shooter"
-                    example: "Shooter Name Example"
+                    description: "Shooter's first name"
+                    example: "Charles"
+                  last_name:
+                    type: string
+                    description: "Shooter's last name"
+                    example: "Whitman"
+                  childhood_trauma_id:
+                    type: integer
+                    description: "ID representing childhood trauma"
+                    example: 11
+                  adult_trauma_id:
+                    type: integer
+                    description: "ID representing adult trauma"
+                    example: 7
+                  childhood_socioeconomic_status_id:
+                    type: integer
+                    description: "ID representing childhood socioeconomic status"
+                    example: 2
+                  bullied:
+                    type: boolean
+                    description: "Whether the shooter was bullied"
+                    example: false
+                  raised_by_single_parent:
+                    type: boolean
+                    description: "Whether the shooter was raised by a single parent"
+                    example: false
+                  parental_separation_or_divorce:
+                    type: boolean
+                    description: "Whether the shooter's parents were separated or divorced"
+                    example: false
+                  suicide_of_parent:
+                    type: boolean
+                    description: "Whether a parent of the shooter committed suicide"
+                    example: false
+                  death_of_parent:
+                    type: boolean
+                    description: "Whether a parent of the shooter died"
+                    example: false
+                  childhood_trauma:
+                    type: boolean
+                    description: "Whether the shooter experienced childhood trauma"
+                    example: true
+                  physical_abuse:
+                    type: boolean
+                    description: "Whether the shooter experienced physical abuse"
+                    example: true
+                  sexual_abuse:
+                    type: boolean
+                    description: "Whether the shooter experienced sexual abuse"
+                    example: false
+                  emotional_abuse:
+                    type: boolean
+                    description: "Whether the shooter experienced emotional abuse"
+                    example: true
+                  neglect:
+                    type: boolean
+                    description: "Whether the shooter experienced neglect"
+                    example: false
+                  mother_violently_treated:
+                    type: boolean
+                    description: "Whether the shooter's mother was violently treated"
+                    example: true
+                  parent_substance_abuse:
+                    type: boolean
+                    description: "Whether the shooter's parent(s) abused substances"
+                    example: false
+                  parent_criminal_record:
+                    type: boolean
+                    description: "Whether the shooter's parent(s) had a criminal record"
+                    example: false
+                  family_member_incarcerated:
+                    type: boolean
+                    description: "Whether a family member was incarcerated"
+                    example: false
+                  grievances_and_motivations_id:
+                    type: integer
+                    description: "ID representing grievances and motivations"
+                    example: 29
+                  known_prejudices_id:
+                    type: integer
+                    description: "ID representing known prejudices"
+                    example: null
+                  racism_id:
+                    type: integer
+                    description: "ID representing racism"
+                    example: 1
+                  religious_hate_id:
+                    type: integer
+                    description: "ID representing religious hate"
+                    example: 1
+                  misogyny:
+                    type: boolean
+                    description: "Whether the shooter exhibited misogyny"
+                    example: false
+                  homophobia:
+                    type: boolean
+                    description: "Whether the shooter exhibited homophobia"
+                    example: false
+                  employment_issue:
+                    type: boolean
+                    description: "Whether the shooter had employment issues"
+                    example: false
+                  economic_issue:
+                    type: boolean
+                    description: "Whether the shooter had economic issues"
+                    example: false
+                  legal_issue:
+                    type: boolean
+                    description: "Whether the shooter had legal issues"
+                    example: false
+                  relationship_issue:
+                    type: boolean
+                    description: "Whether the shooter had relationship issues"
+                    example: false
+                  interpersonal_conflict:
+                    type: boolean
+                    description: "Whether the shooter had interpersonal conflicts"
+                    example: false
+                  fame_seeking:
+                    type: boolean
+                    description: "Whether the shooter was seeking fame"
+                    example: false
+                  motive_other_id:
+                    type: integer
+                    description: "ID representing other motives"
+                    example: null
+                  motive_unknown:
+                    type: boolean
+                    description: "Whether the motive is unknown"
+                    example: true
+                  role_of_psychosis_id:
+                    type: integer
+                    description: "ID representing the role of psychosis"
+                    example: 1
+                  health_and_mental_health_id:
+                    type: integer
+                    description: "ID representing health and mental health"
+                    example: 30
+                  suicidality_id:
+                    type: integer
+                    description: "ID representing suicidality"
+                    example: 3
+                  substance_abuse_id:
+                    type: integer
+                    description: "ID representing substance abuse"
+                    example: 4
+                  voluntary_involuntary_hospitalization:
+                    type: integer
+                    description: "ID representing voluntary/involuntary hospitalization"
+                    example: 1
+                  voluntary_mandatory_counseling:
+                    type: integer
+                    description: "ID representing voluntary/mandatory counseling"
+                    example: 2
+                  mental_illness_id:
+                    type: integer
+                    description: "ID representing mental illness"
+                    example: 2
+                  family_mental_health_issues_id:
+                    type: integer
+                    description: "ID representing family mental health issues"
+                    example: 1
+                  hospitalization_for_psychiatric_reasons:
+                    type: integer
+                    description: "ID representing hospitalization for psychiatric reasons"
+                    example: null
+                  prior_counseling:
+                    type: boolean
+                    description: "Whether the shooter had prior counseling"
+                    example: true
+                  prescribed_psychiatric_medication:
+                    type: boolean
+                    description: "Whether the shooter was prescribed psychiatric medication"
+                    example: false
+                  psychiatric_medication_specified:
+                    type: string
+                    description: "Specified psychiatric medication"
+                    example: "NA"
+                  treatment:
+                    type: boolean
+                    description: "Whether the shooter received treatment"
+                    example: true
+                  fasd:
+                    type: boolean
+                    description: "Whether the shooter had Fetal Alcohol Spectrum Disorder"
+                    example: false
+                  autism_spectrum_disorder:
+                    type: boolean
+                    description: "Whether the shooter had Autism Spectrum Disorder"
+                    example: false
+                  health_issues:
+                    type: boolean
+                    description: "Whether the shooter had health issues"
+                    example: true
+                  specify_health_issues:
+                    type: string
+                    description: "Specified health issues"
+                    example: "brain tumor"
+                  medication_category:
+                    type: string
+                    description: "Category of medication"
+                    example: "NA"
+                  head_injury:
+                    type: boolean
+                    description: "Whether the shooter had a head injury"
+                    example: false
+                  shooter_demographics_id:
+                    type: integer
+                    description: "ID representing shooter demographics"
+                    example: 31
+                  gender_id:
+                    type: integer
+                    description: "ID representing gender"
+                    example: 1
+                  race_id:
+                    type: integer
+                    description: "ID representing race"
+                    example: 1
+                  age:
+                    type: integer
+                    description: "Age of the shooter"
+                    example: 25
+                  birth_order_id:
+                    type: integer
+                    description: "ID representing birth order"
+                    example: 2
+                  height:
+                    type: integer
+                    description: "Height of the shooter in inches"
+                    example: 72
+                  weight:
+                    type: integer
+                    description: "Weight of the shooter in pounds"
+                    example: 200
+                  heterosexual:
+                    type: boolean
+                    description: "Whether the shooter was heterosexual"
+                    example: false
+                  immigrant:
+                    type: boolean
+                    description: "Whether the shooter was an immigrant"
+                    example: false
+                  children:
+                    type: boolean
+                    description: "Whether the shooter had children"
+                    example: false
+                  number_of_siblings:
+                    type: integer
+                    description: "Number of siblings"
+                    example: 2
+                  number_of_older_siblings:
+                    type: integer
+                    description: "Number of older siblings"
+                    example: 0
+                  number_of_younger_siblings:
+                    type: integer
+                    description: "Number of younger siblings"
+                    example: 2
+                  relationship_status_id:
+                    type: integer
+                    description: "ID representing relationship status"
+                    example: 3
+                  religion_id:
+                    type: integer
+                    description: "ID representing religion"
+                    example: 2
+                  community_involvement_id:
+                    type: integer
+                    description: "ID representing community involvement"
+                    example: 4
+                  violence_and_crimes_id:
+                    type: integer
+                    description: "ID representing violence and crimes"
+                    example: 29
+                  education_id:
+                    type: integer
+                    description: "ID representing education"
+                    example: 3
+                  employment_type_id:
+                    type: integer
+                    description: "ID representing employment type"
+                    example: null
+                  military_branch_id:
+                    type: integer
+                    description: "ID representing military branch"
+                    example: 4
+                  military_service_id:
+                    type: integer
+                    description: "ID representing military service"
+                    example: 2
+                  school_performance_id:
+                    type: integer
+                    description: "ID representing school performance"
+                    example: 1
+                  community_involvement_specified:
+                    type: string
+                    description: "Specified community involvement"
+                    example: "formerly an altar boy and Eagle Scout"
+                  employed:
+                    type: boolean
+                    description: "Whether the shooter was employed"
+                    example: false
+                  school_performance_specified:
+                    type: string
+                    description: "Specified school performance"
+                    example: "1.9 GPA"
+                  signs_of_crisis_id:
+                    type: integer
+                    description: "ID representing signs of crisis"
+                    example: 29
+                  crisis_timeframe_id:
+                    type: integer
+                    description: "ID representing crisis timeframe"
+                    example: 3
+                  triggering_event_id:
+                    type: integer
+                    description: "ID representing triggering event"
+                    example: 5
+                  specify_signs_of_crisis:
+                    type: string
+                    description: "Specified signs of crisis"
+                    example: "A few months before the shooting, he saw a psychiatrist for anger issues, inability to complete his schoolwork, and difficulty handling his parents' divorce. He mentioned a fantasy about going up on top of the tower and shooting people. The psychiatrist noted his rapid mood swings and overwhelming periods of hostility with little provocation."
+                  abusive_behavior:
+                    type: boolean
+                    description: "Whether the shooter exhibited abusive behavior"
+                    example: false
+                  inability_to_perform_daily_tasks:
+                    type: boolean
+                    description: "Whether the shooter had inability to perform daily tasks"
+                    example: true
+                  increased_agitation:
+                    type: boolean
+                    description: "Whether the shooter showed increased agitation"
+                    example: true
+                  notably_depressed_mood:
+                    type: boolean
+                    description: "Whether the shooter had a notably depressed mood"
+                    example: true
+                  rapid_mood_swings:
+                    type: boolean
+                    description: "Whether the shooter had rapid mood swings"
+                    example: true
+                  signs_of_crisis:
+                    type: boolean
+                    description: "Whether the shooter showed signs of crisis"
+                    example: true
+                  unusually_calm_or_happy:
+                    type: boolean
+                    description: "Whether the shooter was unusually calm or happy"
+                    example: false
+                  isolation:
+                    type: boolean
+                    description: "Whether the shooter was isolated"
+                    example: false
+                  losing_touch_with_reality:
+                    type: boolean
+                    description: "Whether the shooter was losing touch with reality"
+                    example: false
+                  paranoia:
+                    type: boolean
+                    description: "Whether the shooter exhibited paranoia"
+                    example: false
+                  crimes1_id:
+                    type: integer
+                    description: "ID representing crimes (1)"
+                    example: 1
+                  crimes2_id:
+                    type: integer
+                    description: "ID representing crimes (2)"
+                    example: 10
+                  criminal_justice_involvement_id:
+                    type: integer
+                    description: "ID representing criminal justice involvement"
+                    example: 5
+                  hate_group_association_id:
+                    type: integer
+                    description: "ID representing hate group association"
+                    example: 1
+                  physical_altercation_id:
+                    type: integer
+                    description: "ID representing physical altercation"
+                    example: 1
+                  violent_video_games_id:
+                    type: integer
+                    description: "ID representing violent video games"
+                    example: 4
+                  animal_abuse:
+                    type: boolean
+                    description: "Whether the shooter committed animal abuse"
+                    example: false
+                  bully:
+                    type: boolean
+                    description: "Whether the shooter was a bully"
+                    example: false
+                  criminal_record:
+                    type: boolean
+                    description: "Whether the shooter had a criminal record"
+                    example: true
+                  gang_association:
+                    type: boolean
+                    description: "Whether the shooter had gang association"
+                    example: false
+                  known_to_police_or_fbi:
+                    type: boolean
+                    description: "Whether the shooter was known to police or FBI"
+                    example: false
+                  sexual_offenses:
+                    type: boolean
+                    description: "Whether the shooter committed sexual offenses"
+                    example: false
+                  terror_group_association:
+                    type: boolean
+                    description: "Whether the shooter had terror group association"
+                    example: false
         '404':
           description: "Shooter not found"
