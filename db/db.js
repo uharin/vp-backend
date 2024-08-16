@@ -31,4 +31,16 @@ const connectToDatabase = async () => {
   }
 };
 
-export { connectToDatabase, pool };
+const executeQuery = async (query, params) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(query, params);
+    return result;
+  } catch (err) {
+    throw new Error(`Error executing query: ${err.message}`);
+  } finally {
+    client.release();
+  }
+};
+
+export { connectToDatabase, executeQuery, pool };
