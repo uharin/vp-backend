@@ -1,25 +1,24 @@
-import { executeQuery } from '../../db.js';
+import { executeQuery, fetchRelatedData } from '../../db.js';
 import { createCustomError } from '../../../handlers/errors.js';
 import { getSignsOfCrisis } from './crisis-queries.js';
 import { getTraumas } from './trauma-queries.js';
+import { getMotivations } from './motivation-queries.js';
+import { getHealths } from './health-queries.js';
 
 const GET_SHOOTERS_QUERY = 'SELECT * FROM shooters';
 
 const GET_SHOOTER_QUERY = `
-  SELECT 
-    s.shooter_id,
+  SELECT
     s.first_name,
     s.last_name,
     s.signs_of_crisis_id,
     s.childhood_trauma_id,
-    g.*,
+    s.grievances_and_motivations_id,
     h.*,
     d.*,
     v.*
   FROM 
       shooters s
-  LEFT JOIN 
-      grievances_and_motivations g ON s.grievances_and_motivations_id = g.grievances_and_motivations_id
   LEFT JOIN 
       health_and_mental_health h ON s.health_and_mental_health_id = h.health_and_mental_health_id
   LEFT JOIN 
@@ -65,29 +64,23 @@ export const getShooter = async (req, res, next) => {
       return next(createCustomError(404, 'Shooter not found'));
     }
 
-    if (shooterData.signs_of_crisis_id) {
-      try {
-        const signsOfCrisis = await getSignsOfCrisis(shooterData.signs_of_crisis_id);
-        shooterData.signs_of_crisis = signsOfCrisis;
-      } catch (err) {
-        console.error('Error fetching signs of crisis:', err.message);
-        shooterData.signs_of_crisis = null;
-      }
-    } else {
-      shooterData.signs_of_crisis = null;
-    }
+    const {
+      signs_of_crisis_id: signsOfCrisisId,
+      childhood_trauma_id: childhoodTraumaId,
+      grievances_and_motivations_id: grievancesAndMotivationsId,
+      health_and_mental_health_id: healthAndMentalHealthId,
+    } = shooterData;
 
-    if (shooterData.childhood_trauma_id) {
-      try {
-        const traumas = await getTraumas(shooterData.signs_of_crisis_id);
-        shooterData.childhood_trauma = traumas;
-      } catch (err) {
-        console.error('Error fetching childhood trauma:', err.message);
-        shooterData.childhood_trauma = null;
-      }
-    } else {
-      shooterData.childhood_trauma = null;
-    }
+    const promises = [
+      fetchRelatedData(signsOfCrisisId, getSignsOfCrisis, 'signs_of_crisis'),
+      fetchRelatedData(childhoodTraumaId, getTraumas, 'childhood_trauma'),
+      fetchRelatedData(grievancesAndMotivationsId, getMotivations, 'grievances_and_motivations'),
+      fetchRelatedData(healthAndMentalHealthId, getHealths, 'health_and_mental_health'),
+    ];
+
+    const [crisisData, traumaData, motivationsData, healthData] = await Promise.all(promises);
+
+    Object.assign(shooterData, crisisData, traumaData, motivationsData, healthData);
 
     res.status(200).json(shooterData);
   } catch (err) {

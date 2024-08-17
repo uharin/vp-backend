@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getCases, getCase } from '../db/queries/cases-queries.js';
-import { getShooters, getShooter } from '../db/queries/shooters-queries.js';
+import { getShooters, getShooter } from '../db/queries/shooters/shooters-queries.js';
 
 const appRouter = Router();
 

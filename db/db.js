@@ -31,6 +31,7 @@ const connectToDatabase = async () => {
   }
 };
 
+/* Base SQL wrapper */
 const executeQuery = async (query, params) => {
   const client = await pool.connect();
   try {
@@ -43,4 +44,18 @@ const executeQuery = async (query, params) => {
   }
 };
 
-export { connectToDatabase, executeQuery, pool };
+/* Used for fetching and processing data from related tables (usually lookup tables) */
+const fetchRelatedData = async (id, fetchFn, key) => {
+  if (id) {
+    try {
+      const data = await fetchFn(id);
+      return { [key]: data };
+    } catch (err) {
+      console.error(`Error fetching ${key}:`, err.message);
+      return { [key]: null };
+    }
+  }
+  return { [key]: null };
+};
+
+export { connectToDatabase, executeQuery, fetchRelatedData, pool };
