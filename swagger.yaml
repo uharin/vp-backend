@@ -9,34 +9,134 @@ servers:
 paths:
   /cases:
     get:
-      summary: "Retrieve a list of cases"
-      description: "Retrieve a list of cases from the database"
+      summary: Get all cases
       responses:
         '200':
-          description: "A list of cases"
+          description: Successful response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    latitude:
-                      type: string
-                      description: "The latitude coordinate for the case's location"
-                      example: "41.12518400"
-                    longitude:
-                      type: string
-                      description: "The longitude coordinate for the case's location"
-                      example: "-77.45187800"
-                    number_injured:
-                      type: integer
-                      description: "The number of victims injured in the case"
-                      example: 5
-                    number_killed:
-                      type: integer
-                      description: "The number of victims killed in the case"
-                      example: 6
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  data:
+                    type: object
+                    properties:
+                      cases:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            date:
+                              type: string
+                              example: "October 16, 1981"
+                            dayOfWeek:
+                              type: string
+                              example: "Friday"
+                            day:
+                              type: integer
+                              example: 16
+                            month:
+                              type: integer
+                              example: 10
+                            year:
+                              type: integer
+                              example: 1981
+                            fullAddress:
+                              type: string
+                              example: "Mountain Auto-Truck Parts Store Mountain Top Rd"
+                            city:
+                              type: string
+                              example: "Allen"
+                            county:
+                              type: string
+                              example: "Floyd County"
+                            zipCode:
+                              type: string
+                              example: "41650"
+                            coordinates:
+                              type: object
+                              properties:
+                                lat:
+                                  type: number
+                                  format: float
+                                  example: 37.353459
+                                lng:
+                                  type: number
+                                  format: float
+                                  example: -82.65672
+                            metropolitan:
+                              type: boolean
+                              example: false
+                            locationSpecifics:
+                              type: string
+                              example: "Auto parts store"
+                            insider:
+                              type: boolean
+                              example: false
+                            workplaceShooting:
+                              type: boolean
+                              example: false
+                            multipleLocations:
+                              type: boolean
+                              example: false
+                            otherLocationSpecified:
+                              type: string
+                              example: ""
+                            armedPersonOnScene:
+                              type: boolean
+                              example: false
+                            numberKilled:
+                              type: integer
+                              example: 5
+                            numberInjured:
+                              type: integer
+                              example: 3
+                            familyMemberVictim:
+                              type: boolean
+                              example: false
+                            romanticPartnerVictim:
+                              type: boolean
+                              example: false
+                            kidnappingHostageSituation:
+                              type: boolean
+                              example: false
+                            state:
+                              type: string
+                              example: "Kentucky"
+                            region:
+                              type: string
+                              example: "South"
+                            civicDesignationType:
+                              type: string
+                              example: "Rural"
+                            locationType:
+                              type: string
+                              example: "Retail"
+                            accessType:
+                              type: string
+                              example: "Publicly accessible or unrestricted location"
+                            accessMethod:
+                              type: string
+                              nullable: true
+                            victimLocation:
+                              type: string
+                              example: "Inside"
+                            armedBystanderType:
+                              type: string
+                              example: "Not applicable"
+                      count:
+                        type: integer
+                        example: 197
+                  message:
+                    type: string
+                    example: "Cases retrieved successfully"
+        '404':
+          description: Cases not found
+        '500':
+          description: Internal server error
   /cases/{id}:
     get:
       summary: "Retrieve a specific case"
@@ -50,147 +150,114 @@ paths:
           description: "The ID of the case to retrieve"
       responses:
         '200':
-          description: "Details of the specific case"
+          description: Successful response
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  case_id:
-                    type: integer
-                    description: "The case ID"
-                    example: 1
-                  full_date:
+                  date:
                     type: string
-                    format: date-time
-                    description: "Full date and time of the incident"
-                    example: "1966-08-01T00:00:00.000Z"
-                  day_of_week:
+                    example: "October 23, 1967"
+                  dayOfWeek:
                     type: string
-                    description: "Day of the week"
                     example: "Monday"
                   day:
                     type: integer
-                    description: "Day of the month"
-                    example: 1
+                    example: 23
                   month:
                     type: integer
-                    description: "Month of the year"
-                    example: 8
+                    example: 10
                   year:
                     type: integer
-                    description: "Year of the incident"
-                    example: 1966
-                  street_number:
+                    example: 1967
+                  fullAddress:
                     type: string
-                    description: "Street number"
-                    example: "110"
-                  street_name:
-                    type: string
-                    description: "Street name"
-                    example: "Inner Campus Dr"
+                    example: "599 S Highland St"
                   city:
                     type: string
-                    description: "City name"
-                    example: "Austin"
+                    example: "Lock Haven"
                   county:
                     type: string
-                    description: "County name"
-                    example: "Travis County"
-                  zip_code:
+                    example: "Clinton County"
+                  zipCode:
                     type: string
-                    description: "ZIP code"
-                    example: "78705"
-                  latitude:
-                    type: string
-                    description: "Latitude coordinate"
-                    example: "30.28605800"
-                  longitude:
-                    type: string
-                    description: "Longitude coordinate"
-                    example: "-97.73935000"
-                  state_id:
-                    type: integer
-                    description: "State ID"
-                    example: 43
-                  region_id:
-                    type: integer
-                    description: "Region ID"
-                    example: 1
-                  civic_designation_id:
-                    type: integer
-                    description: "Civic designation ID"
-                    example: 1
+                    example: "17745"
+                  coordinates:
+                    type: object
+                    properties:
+                      lat:
+                        type: number
+                        format: float
+                        example: 41.125184
+                      lng:
+                        type: number
+                        format: float
+                        example: -77.451878
                   metropolitan:
                     type: boolean
-                    description: "Whether the incident occurred in a metropolitan area"
-                    example: true
-                  location_id:
-                    type: integer
-                    description: "Location ID"
-                    example: 2
-                  location_specifics:
+                    example: false
+                  locationSpecifics:
                     type: string
-                    description: "Specific location details"
-                    example: "University of Texas"
+                    example: "Paper mill"
                   insider:
                     type: boolean
-                    description: "Whether the perpetrator was an insider"
                     example: true
-                  access_type_id:
-                    type: integer
-                    description: "Access type ID"
-                    example: 3
-                  access_method_id:
-                    type: integer
-                    description: "Access method ID"
-                    example: 1
-                  victim_location_id:
-                    type: integer
-                    description: "Victim location ID"
-                    example: 3
-                  workplace_shooting:
+                  workplaceShooting:
                     type: boolean
-                    description: "Whether it was a workplace shooting"
-                    example: false
-                  multiple_locations:
-                    type: boolean
-                    description: "Whether the incident occurred at multiple locations"
                     example: true
-                  other_location_specified:
+                  multipleLocations:
+                    type: boolean
+                    example: true
+                  otherLocationSpecified:
                     type: string
-                    description: "Other location specified"
-                    example: "Shooter's home"
-                  armed_person_on_scene:
+                    example: "Victim's home, airport"
+                  armedPersonOnScene:
                     type: boolean
-                    description: "Whether there was an armed person on scene"
-                    example: true
-                  armed_bystander_id:
-                    type: integer
-                    description: "Armed bystander ID"
-                    example: 3
-                  number_killed:
-                    type: integer
-                    description: "Number of people killed"
-                    example: 15
-                  number_injured:
-                    type: integer
-                    description: "Number of people injured"
-                    example: 31
-                  family_member_victim:
-                    type: boolean
-                    description: "Whether a family member was a victim"
-                    example: true
-                  romantic_partner_victim:
-                    type: boolean
-                    description: "Whether a romantic partner was a victim"
-                    example: true
-                  kidnapping_hostage_situation:
-                    type: boolean
-                    description: "Whether it was a kidnapping or hostage situation"
                     example: false
+                  numberKilled:
+                    type: integer
+                    example: 6
+                  numberInjured:
+                    type: integer
+                    example: 6
+                  familyMemberVictim:
+                    type: boolean
+                    example: false
+                  romanticPartnerVictim:
+                    type: boolean
+                    example: false
+                  kidnappingHostageSituation:
+                    type: boolean
+                    example: false
+                  state:
+                    type: string
+                    example: "Pennsylvania"
+                  region:
+                    type: string
+                    example: "Northeast"
+                  civicDesignationType:
+                    type: string
+                    example: "Rural"
+                  locationType:
+                    type: string
+                    example: "Warehouse or factory"
+                  accessType:
+                    type: string
+                    example: "Restricted space and had access"
+                  accessMethod:
+                    type: string
+                    nullable: true
+                  victimLocation:
+                    type: string
+                    example: "Inside"
+                  armedBystanderType:
+                    type: string
+                    example: "Not applicable"
         '404':
-          description: "Case not found"
+          description: Case not found
+        '500':
+          description: Internal server error
   /shooters:
     get:
       summary: "Retrieve a list of shooters"
