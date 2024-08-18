@@ -31,7 +31,7 @@ const connectToDatabase = async () => {
   }
 };
 
-/* Base SQL wrapper */
+/* Base SQL query wrapper */
 const executeQuery = async (query, params) => {
   const client = await pool.connect();
   try {

@@ -11,11 +11,30 @@ export const convertToBoolean = (value) => {
   return Boolean(value);
 };
 
+// Converts snake case query results to camelCase for front-end consumption
+export function toCamelCase(obj) {
+  const camelCaseKeys = (key) => key.replace(/(_\w)/g, (matches) => matches[1].toUpperCase());
+
+  return Object.keys(obj).reduce((acc, key) => {
+    const value = obj[key];
+    const camelKey = camelCaseKeys(key);
+
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      acc[camelKey] = toCamelCase(value);
+    } else if (Array.isArray(value)) {
+      acc[camelKey] = value.map(item => (item && typeof item === 'object') ? toCamelCase(item) : item);
+    } else {
+      acc[camelKey] = value;
+    }
+
+    return acc;
+  }, {});
+}
+
 /*
   Handles blank values in import data. 
   Offset = 1 as default because many values in csv start at value 0, but we want database table IDs to start at 1.
 */
-
 export const parseValue = (value, parser, { defaultValue = null, offset = 1 } = {}) => {
   try {
     if (value === undefined
