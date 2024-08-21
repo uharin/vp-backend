@@ -32,10 +32,7 @@ export const getShooters = async (_req, res, next) => {
 
     const responsePayload = {
       status: 'success',
-      data: {
-        cases: result.rows,
-        count: result.rowCount,
-      },
+      data: { cases: result.rows },
       message: 'Shooters retrieved successfully',
     };
 
