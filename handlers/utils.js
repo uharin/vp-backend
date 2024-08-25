@@ -50,3 +50,6 @@ export const parseValue = (value, parser, { defaultValue = null, offset = 1 } = 
     return defaultValue;
   }
 };
+
+// Forces capitalization of first letter in word
+export const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
