@@ -1,9 +1,7 @@
-import { executeQuery } from '../../db.js';
-import { toCamelCase } from '../../../handlers/utils.js';
-import { createCustomError } from '../../../handlers/errors.js';
+import { handleGetRequest } from '../../../handlers/requests.js';
 import { FIREARMS_SUBQUERY } from '../firearms/firearms-queries.js';
 
-const generateCasesQuery = (params = '') => `
+export const generateCasesQuery = (params = '') => `
   ${FIREARMS_SUBQUERY}
   SELECT
     ARRAY_AGG(DISTINCT CONCAT(sh.first_name, ' ', sh.last_name)) AS shooters,
@@ -119,48 +117,6 @@ const generateCasesQuery = (params = '') => `
     ab.armed_bystander_type;
 `;
 
-// Helper function to reduce redundant query code.
-const getCaseQuery = (singleCase = false) => {
-  if (singleCase) {
-    return generateCasesQuery('WHERE c.case_id = $1') ;
-  }
-  return generateCasesQuery();
-};
+export const getCases = (req, res, next) => handleGetRequest('cases', req, res, next);
 
-export const getCases = async (_req, res, next) => {
-  try {
-    const result = await executeQuery(getCaseQuery());
-    
-    const responsePayload = {
-      status: 'success',
-      data: { cases: result.rows },
-      message: 'Cases retrieved successfully'
-    };
-
-    res.status(200).json(toCamelCase(responsePayload));
-  } catch (err) {
-    next(createCustomError(500, 'Internal Server Error', err.message));
-  }
-};
-
-export const getCase = async (req, res, next) => {
-  const { id } = req.params;
-
-  if (!id || isNaN(id)) {
-    return next(createCustomError(400, 'Invalid case ID'));
-  }
-
-  try {
-    const result =  await executeQuery(getCaseQuery(true), [id]);
-
-    const caseData = result.rows[0];
-
-    if (!caseData) {
-      return next(createCustomError(404, 'Case not found'));
-    }
-
-    res.status(200).json(toCamelCase(caseData));
-  } catch (err) {
-    next(createCustomError(500, 'Internal Server Error', err.message));
-  }
-};
+export const getCase = (req, res, next) => handleGetRequest('cases', req, res, next);

@@ -1,8 +1,6 @@
-import { executeQuery } from '../../db.js';
-import { createCustomError } from '../../../handlers/errors.js';
-import { toCamelCase } from '../../../handlers/utils.js';
+import { handleGetRequest } from '../../../handlers/requests.js';
 
-const generateFirearmsQuery = (params = '') => `
+export const generateFirearmsQuery = (params = '') => `
   SELECT 
     fa.make_and_model,
     ARRAY_AGG(DISTINCT CONCAT(sh.first_name, ' ', sh.last_name)) AS used_by,
@@ -89,47 +87,6 @@ export const FIREARMS_SUBQUERY = `
   )
 `;
 
-const getFirearmQuery = (singleFirearm = false) => {
-  if (singleFirearm) {
-    return generateFirearmsQuery('WHERE fa.firearm_id = $1');
-  }
-  return generateFirearmsQuery();
-};
+export const getFirearms = (req, res, next) => handleGetRequest('firearms', req, res, next);
 
-export const getFirearms = async (_req, res, next) => {
-  try {
-    const result = await executeQuery(getFirearmQuery());
-
-    const responsePayload = {
-      status: 'success',
-      data: { firearms: result.rows },
-      message: 'Firearms retrieved successfully'
-    };
-
-    res.status(200).json(responsePayload);
-  } catch (err) {
-    next(createCustomError(500, 'Internal Server Error', err.message));
-  }
-};
-
-export const getFirearm = async (req, res, next) => {
-  const { id } = req.params;
-
-  if (!id || isNaN(id)) {
-    return next(createCustomError(400, 'Invalid firearm ID'));
-  }
-
-  try {
-    const result =  await executeQuery(getFirearmQuery(true), [id]);
-
-    const firearmData = result.rows[0];
-
-    if (!firearmData) {
-      return next(createCustomError(404, 'Firearm not found'));
-    }
-
-    res.status(200).json(toCamelCase(firearmData));
-  } catch (err) {
-    next(createCustomError(500, 'Internal Server Error', err.message));
-  }
-};
+export const getFirearm = (req, res, next) => handleGetRequest('firearms', req, res, next);
