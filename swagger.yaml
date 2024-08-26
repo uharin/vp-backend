@@ -156,174 +156,243 @@ paths:
               schema:
                 type: object
                 properties:
-                  date:
+                  status:
                     type: string
-                    example: "October 23, 1967"
-                  dayOfWeek:
-                    type: string
-                    example: "Monday"
-                  day:
-                    type: integer
-                    example: 23
-                  month:
-                    type: integer
-                    example: 10
-                  year:
-                    type: integer
-                    example: 1967
-                  fullAddress:
-                    type: string
-                    example: "599 S Highland St"
-                  city:
-                    type: string
-                    example: "Lock Haven"
-                  county:
-                    type: string
-                    example: "Clinton County"
-                  zipCode:
-                    type: string
-                    example: "17745"
-                  coordinates:
+                    example: "success"
+                  data:
                     type: object
                     properties:
-                      lat:
-                        type: number
-                        format: float
-                        example: 41.125184
-                      lng:
-                        type: number
-                        format: float
-                        example: -77.451878
-                  metropolitan:
-                    type: boolean
-                    example: false
-                  locationSpecifics:
+                      shooters:
+                        type: array
+                        items:
+                          type: string
+                          example: "Charles Whitman"
+                      date:
+                        type: string
+                        example: "October 23, 1967"
+                      dayOfWeek:
+                        type: string
+                        example: "Monday"
+                      day:
+                        type: integer
+                        example: 23
+                      month:
+                        type: integer
+                        example: 10
+                      year:
+                        type: integer
+                        example: 1967
+                      fullAddress:
+                        type: string
+                        example: "599 S Highland St"
+                      city:
+                        type: string
+                        example: "Lock Haven"
+                      county:
+                        type: string
+                        example: "Clinton County"
+                      zipCode:
+                        type: string
+                        example: "17745"
+                      coordinates:
+                        type: object
+                        properties:
+                          lat:
+                            type: number
+                            format: float
+                            example: 41.125184
+                          lng:
+                            type: number
+                            format: float
+                            example: -77.451878
+                      metropolitan:
+                        type: boolean
+                        example: false
+                      locationSpecifics:
+                        type: string
+                        example: "Paper mill"
+                      insider:
+                        type: boolean
+                        example: true
+                      workplaceShooting:
+                        type: boolean
+                        example: true
+                      multipleLocations:
+                        type: boolean
+                        example: true
+                      otherLocationSpecified:
+                        type: string
+                        example: "Victim's home, airport"
+                      armedPersonOnScene:
+                        type: boolean
+                        example: false
+                      numberKilled:
+                        type: integer
+                        example: 6
+                      numberInjured:
+                        type: integer
+                        example: 6
+                      familyMemberVictim:
+                        type: boolean
+                        example: false
+                      romanticPartnerVictim:
+                        type: boolean
+                        example: false
+                      kidnappingHostageSituation:
+                        type: boolean
+                        example: false
+                      state:
+                        type: string
+                        example: "Pennsylvania"
+                      region:
+                        type: string
+                        example: "Northeast"
+                      civicDesignationType:
+                        type: string
+                        example: "Rural"
+                      locationType:
+                        type: string
+                        example: "Warehouse or factory"
+                      accessType:
+                        type: string
+                        example: "Restricted space and had access"
+                      accessMethod:
+                        type: string
+                        nullable: true
+                      victimLocation:
+                        type: string
+                        example: "Inside"
+                      armedBystanderType:
+                        type: string
+                        example: "Not applicable"
+                      firearms:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            gifted:
+                              type: boolean
+                              example: false
+                            caliber:
+                              type: string
+                              example: "Medium"
+                            unknown:
+                              type: boolean
+                              example: false
+                            usedBy:
+                              type: array
+                              items:
+                                type: string
+                                example: "Charles Whitman"
+                            modified:
+                              type: boolean
+                              example: false
+                            caseCount:
+                              type: integer
+                              example: 1
+                            makeAndModel:
+                              type: string
+                              example: ".30 M1 carbine"
+                            usedInShooting:
+                              type: boolean
+                              example: true
+                            extendedMagazine:
+                              type: boolean
+                              example: false
+                            firearmLegalStatus:
+                              type: string
+                              example: "Federal Firearms Licensed dealer"
+                            firearmTheftStatus:
+                              type: string
+                              example: "No"
+                            firearmClassification:
+                              type: string
+                              example: "Rifle"
+                            firearmIllegalStatus:
+                              type: string
+                              example: "Legally purchased"
+                            largeCapacityMagazine:
+                              type: boolean
+                              example: true
+                            assembledWithLegalParts:
+                              type: boolean
+                              example: false
+                            firearmPurchaseTimeframe:
+                              type: string
+                              example: "Less than one month prior to shooting"
+                  message:
                     type: string
-                    example: "Paper mill"
-                  insider:
-                    type: boolean
-                    example: true
-                  workplaceShooting:
-                    type: boolean
-                    example: true
-                  multipleLocations:
-                    type: boolean
-                    example: true
-                  otherLocationSpecified:
-                    type: string
-                    example: "Victim's home, airport"
-                  armedPersonOnScene:
-                    type: boolean
-                    example: false
-                  numberKilled:
-                    type: integer
-                    example: 6
-                  numberInjured:
-                    type: integer
-                    example: 6
-                  familyMemberVictim:
-                    type: boolean
-                    example: false
-                  romanticPartnerVictim:
-                    type: boolean
-                    example: false
-                  kidnappingHostageSituation:
-                    type: boolean
-                    example: false
-                  state:
-                    type: string
-                    example: "Pennsylvania"
-                  region:
-                    type: string
-                    example: "Northeast"
-                  civicDesignationType:
-                    type: string
-                    example: "Rural"
-                  locationType:
-                    type: string
-                    example: "Warehouse or factory"
-                  accessType:
-                    type: string
-                    example: "Restricted space and had access"
-                  accessMethod:
-                    type: string
-                    nullable: true
-                  victimLocation:
-                    type: string
-                    example: "Inside"
-                  armedBystanderType:
-                    type: string
-                    example: "Not applicable"
+                    example: "Cases retrieved successfully"
         '404':
           description: Case not found
         '500':
           description: Internal server error
-  /shooters:
-    get:
-      summary: "Retrieve a list of shooters"
-      description: "Retrieve a list of shooters from the database"
-      responses:
-        '200':
-          description: "A list of shooters"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    status:
-                      type: string
-                      description: "Status of the request"
-                      example: "success"
-                    data:
-                      type: object
-                      properties:
-                        cases:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              shooter_id:
-                                type: integer
-                                description: "The shooter's ID"
-                                example: 6
-                              childhood_trauma_id:
-                                type: integer
-                                description: "ID representing childhood trauma"
-                                example: 8
-                              grievances_and_motivations_id:
-                                type: integer
-                                description: "ID representing grievances and motivations"
-                                example: 6
-                              health_and_mental_health_id:
-                                type: integer
-                                description: "ID representing health and mental health"
-                                example: 14
-                              shooter_demographics_id:
-                                type: integer
-                                description: "ID representing shooter demographics"
-                                example: 12
-                              signs_of_crisis_id:
-                                type: integer
-                                description: "ID representing signs of crisis"
-                                example: 6
-                              violence_and_crimes_id:
-                                type: integer
-                                description: "ID representing violence and crimes"
-                                example: 17
-                              first_name:
-                                type: string
-                                description: "Shooter's first name"
-                                example: "Gan Fong"
-                              last_name:
-                                type: string
-                                description: "Shooter's last name"
-                                example: "Chin"
-                        count:
-                          type: integer
-                          description: "Total number of cases"
-                          example: 197
+    /shooters:
+      get:
+        summary: "Retrieve a list of shooters"
+        description: "Retrieve a list of shooters from the database"
+        responses:
+          '200':
+            description: "A list of shooters"
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        description: "Status of the request"
+                        example: "success"
+                      data:
+                        type: object
+                        properties:
+                          cases:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                shooter_id:
+                                  type: integer
+                                  description: "The shooter's ID"
+                                  example: 6
+                                childhood_trauma_id:
+                                  type: integer
+                                  description: "ID representing childhood trauma"
+                                  example: 8
+                                grievances_and_motivations_id:
+                                  type: integer
+                                  description: "ID representing grievances and motivations"
+                                  example: 6
+                                health_and_mental_health_id:
+                                  type: integer
+                                  description: "ID representing health and mental health"
+                                  example: 14
+                                shooter_demographics_id:
+                                  type: integer
+                                  description: "ID representing shooter demographics"
+                                  example: 12
+                                signs_of_crisis_id:
+                                  type: integer
+                                  description: "ID representing signs of crisis"
+                                  example: 6
+                                violence_and_crimes_id:
+                                  type: integer
+                                  description: "ID representing violence and crimes"
+                                  example: 17
+                                first_name:
+                                  type: string
+                                  description: "Shooter's first name"
+                                  example: "Gan Fong"
+                                last_name:
+                                  type: string
+                                  description: "Shooter's last name"
+                                  example: "Chin"
+                          count:
+                            type: integer
+                            description: "Total number of cases"
+                            example: 197
   paths:
   /shooters/{id}:
     get:
