@@ -13,17 +13,17 @@ export const RESOURCES = {
   firearms: {
     table: 'fa',
     id: 'firearm_id',
-    queryGenerator: () => generateFirearmsQuery,
+    generateQuery: () => generateFirearmsQuery,
   },
   cases: {
     table: 'c',
     id: 'case_id',
-    queryGenerator: () => generateCasesQuery,
+    generateQuery: () => generateCasesQuery,
   },
   shooters: {
     table: 's',
     id: 'shooter_id',
-    queryGenerator: () => generateShootersQuery,
+    generateQuery: () => generateShootersQuery,
     relatedData:  {
       signs_of_crisis: getSignsOfCrisis,
       childhood_trauma: getTraumas,

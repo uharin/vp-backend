@@ -3,19 +3,22 @@ import { capitalize, toCamelCase } from './utils.js';
 import { executeQuery } from '../db/db.js';
 import { createCustomError } from './errors.js';
 
+// Clean up payload by omitting related ID fields used for lookups
+const omitFields = (obj, fields) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key]) => !fields.includes(key))
+  );
+};
+
 // Used for fetching data from tables that are related to a primary table (usually lookup tables)
 const fetchRelatedData = async (id, fetchFn, key) => {
-  if (id) {
-    try {
-      const data = await fetchFn(id);
-      console.log(`Fetched ${key}:`, data);
-      return { [key]: data };
-    } catch (err) {
-      console.error(`Error fetching ${key}:`, err.message);
-      return { [key]: null };
-    }
+  try {
+    const data = id ? await fetchFn(id) : null;
+    return { [key]: data };
+  } catch (err) {
+    console.error(`Error fetching ${key}:`, err.message);
+    return { [key]: null };
   }
-  return { [key]: null };
 };
 
 export const handleGetRequest = async (resourceType, req, res, next) => {
@@ -26,7 +29,7 @@ export const handleGetRequest = async (resourceType, req, res, next) => {
   const { 
     table, 
     id: tableId,
-    queryGenerator,
+    generateQuery,
     relatedData,
   } = RESOURCES[resourceType];
 
@@ -38,11 +41,8 @@ export const handleGetRequest = async (resourceType, req, res, next) => {
   }
 
   try {
-    const queryId = idSearch
-      ? `WHERE ${table}.${tableId} = $1` 
-      : '';
-  
-    const query = queryGenerator()(queryId);
+    const queryId = idSearch ? `WHERE ${table}.${tableId} = $1` : '';
+    const query = generateQuery()(queryId);
     const result = await executeQuery(query, idSearch ? [id] : []);
     const data = idSearch ? result.rows[0] : result.rows;
     
@@ -50,7 +50,7 @@ export const handleGetRequest = async (resourceType, req, res, next) => {
       return next(createCustomError(404, `No ${entity} were found`));
     }
 
-    /* 
+    /*
       Fetch related data for resource_ids returned by the initial query.
       If resource config includes relatedData, use 'fetchRelated' fn to fetch and merge data into a single object w/reduce.
     */
@@ -58,18 +58,17 @@ export const handleGetRequest = async (resourceType, req, res, next) => {
 
     if (relatedData && data) {
       const fetchRelated = async (resourceData) => {
-        const relatedPromises = Object.entries(relatedData).map(
-          async ([key, fetchFn]) => {
+        const relatedResults = await Promise.all(
+          Object.entries(relatedData).map(async ([key, fetchFn]) => {
             const relatedId = resourceData[`${key}_id`];
             return fetchRelatedData(relatedId, fetchFn, key);
-          }
-        );
+          })
+        ).then(res => res.reduce((acc, result) => ({ ...acc, ...result }), {}));
+        
+        const idFields = Object.keys(relatedData).map(key => `${key}_id`);
+        const cleanedResourceData = omitFields(resourceData, idFields);
 
-        const relatedResults = await Promise.all(relatedPromises).reduce(
-          (acc, result) => ({ ...acc, ...result }), {}
-        );
-
-        return { ...toCamelCase(resourceData), ...toCamelCase(relatedResults) };
+        return { ...toCamelCase(cleanedResourceData), ...toCamelCase(relatedResults) };
       };
 
       const finalData = await Promise.all((idSearch ? [data] : data).map(fetchRelated));
