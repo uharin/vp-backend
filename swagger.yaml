@@ -9,10 +9,10 @@ servers:
 paths:
   /cases:
     get:
-      summary: Get all cases
+      summary: "Retrieve all cases data"
       responses:
-        '200':
-          description: Successful response
+        200:
+          description: "Successful response"
           content:
             application/json:
               schema:
@@ -133,10 +133,10 @@ paths:
                   message:
                     type: string
                     example: "Cases retrieved successfully"
-        '404':
-          description: Cases not found
-        '500':
-          description: Internal server error
+        404:
+          description: "No cases were found"
+        500:
+          description: "Internal server error"
   /cases/{id}:
     get:
       summary: "Retrieve a specific case"
@@ -149,8 +149,8 @@ paths:
             type: integer
           description: "The ID of the case to retrieve"
       responses:
-        '200':
-          description: Successful response
+        200:
+          description: "Successful response"
           content:
             application/json:
               schema:
@@ -323,77 +323,374 @@ paths:
                   message:
                     type: string
                     example: "Cases retrieved successfully"
-        '404':
-          description: Case not found
-        '500':
-          description: Internal server error
-    /shooters:
-      get:
-        summary: "Retrieve a list of shooters"
-        description: "Retrieve a list of shooters from the database"
-        responses:
-          '200':
-            description: "A list of shooters"
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
+        404:
+          description: "No cases were found"
+        500:
+          description: "Internal server error"
+  /shooters:
+    get:
+      summary: "Retrieve all shooters data"
+      description: "Returns a list of shooters with detailed information"
+      responses:
+        200:
+          description: "A list of shooters with detailed attributes"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Shooters retrieved successfully"
+                  data:
                     type: object
                     properties:
-                      status:
-                        type: string
-                        description: "Status of the request"
-                        example: "success"
-                      data:
-                        type: object
-                        properties:
-                          cases:
-                            type: array
-                            items:
+                      shooters:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            firstName:
+                              type: string
+                              example: "Michael"
+                            lastName:
+                              type: string
+                              example: "Silka"
+                            signsOfCrisis:
                               type: object
                               properties:
-                                shooter_id:
-                                  type: integer
-                                  description: "The shooter's ID"
-                                  example: 6
-                                childhood_trauma_id:
-                                  type: integer
-                                  description: "ID representing childhood trauma"
-                                  example: 8
-                                grievances_and_motivations_id:
-                                  type: integer
-                                  description: "ID representing grievances and motivations"
-                                  example: 6
-                                health_and_mental_health_id:
-                                  type: integer
-                                  description: "ID representing health and mental health"
-                                  example: 14
-                                shooter_demographics_id:
-                                  type: integer
-                                  description: "ID representing shooter demographics"
-                                  example: 12
-                                signs_of_crisis_id:
-                                  type: integer
-                                  description: "ID representing signs of crisis"
-                                  example: 6
-                                violence_and_crimes_id:
-                                  type: integer
-                                  description: "ID representing violence and crimes"
-                                  example: 17
-                                first_name:
+                                unusuallyCalmOrHappy:
+                                  type: boolean
+                                  example: false
+                                specifySignsOfCrisis:
                                   type: string
-                                  description: "Shooter's first name"
-                                  example: "Gan Fong"
-                                last_name:
+                                  nullable: true
+                                  example: null
+                                signsOfCrisis:
+                                  type: boolean
+                                  example: false
+                                rapidMoodSwings:
+                                  type: boolean
+                                  example: false
+                                paranoia:
+                                  type: boolean
+                                  example: false
+                                notablyDepressedMood:
+                                  type: boolean
+                                  example: false
+                                losingTouchWithReality:
+                                  type: boolean
+                                  example: false
+                                isolation:
+                                  type: boolean
+                                  example: false
+                                increasedAgitation:
+                                  type: boolean
+                                  example: false
+                                inabilityToPerformDailyTasks:
+                                  type: boolean
+                                  example: false
+                                abusiveBehavior:
+                                  type: boolean
+                                  example: false
+                                triggeringEvent:
                                   type: string
-                                  description: "Shooter's last name"
-                                  example: "Chin"
-                          count:
-                            type: integer
-                            description: "Total number of cases"
-                            example: 197
-  paths:
+                                  example: "No evidence"
+                                crisisTimeframe:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                            childhoodTrauma:
+                              type: object
+                              properties:
+                                bullied:
+                                  type: boolean
+                                  example: false
+                                raisedBySingleParent:
+                                  type: boolean
+                                  example: false
+                                parentalSeparationOrDivorce:
+                                  type: boolean
+                                  example: false
+                                suicideOfParent:
+                                  type: boolean
+                                  example: false
+                                deathOfParent:
+                                  type: boolean
+                                  example: false
+                                childhoodTrauma:
+                                  type: boolean
+                                  example: false
+                                physicalAbuse:
+                                  type: boolean
+                                  example: false
+                                sexualAbuse:
+                                  type: boolean
+                                  example: false
+                                emotionalAbuse:
+                                  type: boolean
+                                  example: false
+                                neglect:
+                                  type: boolean
+                                  example: false
+                                motherViolentlyTreated:
+                                  type: boolean
+                                  example: false
+                                parentSubstanceAbuse:
+                                  type: boolean
+                                  example: false
+                                parentCriminalRecord:
+                                  type: boolean
+                                  example: false
+                                familyMemberIncarcerated:
+                                  type: boolean
+                                  example: false
+                                adultTrauma:
+                                  type: string
+                                  example: "No evidence"
+                                childhoodSocioeconomicStatus:
+                                  type: string
+                                  example: "Middle class"
+                            grievancesAndMotivations:
+                              type: object
+                              properties:
+                                misogyny:
+                                  type: boolean
+                                  example: false
+                                homophobia:
+                                  type: boolean
+                                  example: false
+                                employmentIssue:
+                                  type: boolean
+                                  example: false
+                                economicIssue:
+                                  type: boolean
+                                  example: false
+                                legalIssue:
+                                  type: boolean
+                                  example: false
+                                relationshipIssue:
+                                  type: boolean
+                                  example: false
+                                interpersonalConflict:
+                                  type: boolean
+                                  example: false
+                                fameSeeking:
+                                  type: boolean
+                                  example: false
+                                motiveUnknown:
+                                  type: boolean
+                                  example: true
+                                knownPrejudice:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                motiveOther:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                racismType:
+                                  type: string
+                                  example: "No evidence"
+                                religiousHateType:
+                                  type: string
+                                  example: "No evidence"
+                                roleOfPsychosis:
+                                  type: string
+                                  example: "No evidence that symptoms of psychosis played a role in the shooting"
+                            healthAndMentalHealth:
+                              type: object
+                              properties:
+                                hospitalizationForPsychiatricReasons:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                priorCounseling:
+                                  type: boolean
+                                  example: false
+                                prescribedPsychiatricMedication:
+                                  type: boolean
+                                  example: false
+                                treatment:
+                                  type: boolean
+                                  example: false
+                                fasd:
+                                  type: boolean
+                                  example: false
+                                autismSpectrumDisorder:
+                                  type: boolean
+                                  example: false
+                                healthIssues:
+                                  type: boolean
+                                  example: false
+                                headInjury:
+                                  type: boolean
+                                  example: false
+                                psychiatricMedicationSpecified:
+                                  type: string
+                                  example: "NA"
+                                specifyHealthIssues:
+                                  type: string
+                                  example: "NA"
+                                medicationCategory:
+                                  type: string
+                                  example: "NA"
+                                familyMentalHealthHistory:
+                                  type: string
+                                  example: "No evidence"
+                                mentalIllness:
+                                  type: string
+                                  example: "No evidence"
+                                substanceAbuse:
+                                  type: string
+                                  example: "No evidence"
+                                suicidality:
+                                  type: string
+                                  example: "No evidence"
+                                voluntaryInvoluntary:
+                                  type: string
+                                  example: "N/A"
+                            shooterDemographics:
+                              type: object
+                              properties:
+                                age:
+                                  type: integer
+                                  example: 25
+                                height:
+                                  type: integer
+                                  nullable: true
+                                  example: null
+                                weight:
+                                  type: integer
+                                  nullable: true
+                                  example: null
+                                heterosexual:
+                                  type: boolean
+                                  example: false
+                                immigrant:
+                                  type: boolean
+                                  example: false
+                                children:
+                                  type: boolean
+                                  example: false
+                                numberOfSiblings:
+                                  type: integer
+                                  example: 2
+                                numberOfOlderSiblings:
+                                  type: integer
+                                  nullable: true
+                                  example: null
+                                numberOfYoungerSiblings:
+                                  type: integer
+                                  nullable: true
+                                  example: null
+                                communityInvolvementSpecified:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                employed:
+                                  type: boolean
+                                  example: false
+                                schoolPerformanceSpecified:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                birthOrder:
+                                  type: integer
+                                  nullable: true
+                                  example: null
+                                communityInvolvement:
+                                  type: string
+                                  example: "No evidence"
+                                education:
+                                  type: string
+                                  example: "High school or GED"
+                                employmentType:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                gender:
+                                  type: string
+                                  example: "Male"
+                                militaryBranch:
+                                  type: string
+                                  example: "Army"
+                                militaryService:
+                                  type: string
+                                  example: "Yes"
+                                race:
+                                  type: string
+                                  example: "White"
+                                relationshipStatus:
+                                  type: string
+                                  example: "Single"
+                                religion:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                schoolPerformance:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                            violenceAndCrimes:
+                              type: object
+                              properties:
+                                animalAbuse:
+                                  type: boolean
+                                  example: false
+                                bully:
+                                  type: boolean
+                                  example: false
+                                criminalRecord:
+                                  type: boolean
+                                  example: true
+                                gangAssociation:
+                                  type: boolean
+                                  example: false
+                                knownToPoliceOrFbi:
+                                  type: boolean
+                                  example: false
+                                sexualOffenses:
+                                  type: boolean
+                                  example: false
+                                terrorGroupAssociation:
+                                  type: boolean
+                                  example: false
+                                criminalJusticeInvolvement:
+                                  type: string
+                                  example: "Convicted"
+                                crimeType1:
+                                  type: string
+                                  example: "Homicide"
+                                crimeType2:
+                                  type: string
+                                  example: "Stolen property"
+                                hateGroupAssociation:
+                                  type: string
+                                  example: "No evidence"
+                                physicalAltercation:
+                                  type: string
+                                  example: "No evidence"
+                                violentVideoGamePlayed:
+                                  type: string
+                                  example: "N/A - pre-1992"
+                                domesticAbuses:
+                                  type: array
+                                  items:
+                                    type: string
+                                    example: "N/A"
+                                domesticAbuseHistories:
+                                  type: array
+                                  items:
+                                    type: string
+                                    example: "No evidence"
+        404:
+          description: "No shooters were found"
+        500:
+          description: "Internal server error"
   /shooters/{id}:
     get:
       summary: "Retrieve a specific shooter"
@@ -406,7 +703,7 @@ paths:
             type: integer
           description: "The ID of the shooter to retrieve"
       responses:
-        '200':
+        200:
           description: Successful response
           content:
             application/json:    
@@ -416,11 +713,11 @@ paths:
                   firstName:
                     type: string
                     example: "Charles"
-                    description: "The shooter's first name"
+                    description: "The shooters first name"
                   lastName:
                     type: string
                     example: "Whitman"
-                    description: "The shooter's last name"
+                    description: "The shooters last name"
                   signsOfCrisis:
                     type: object
                     description: "Information about signs of crisis exhibited by the shooter"
@@ -837,5 +1134,102 @@ paths:
                           type: string
                         example: ["Abused romantic partner"]
                         description: "History of domestic abuse perpetrated by the shooter"
-        '404':
-          description: "Shooter not found"
+        404:
+          description: "No shooters were found"
+        500:
+          description: "Internal server error"
+  /firearms:
+    get:
+      summary: "Retrieve all firearms data"
+      description: "Returns a list of firearms with detailed information"
+      responses:
+        200:
+          description: "A list of firearms with detailed attributes"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Firearms retrieved successfully"
+                  data:
+                    type: object
+                    properties:
+                      firearms:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            makeAndModel:
+                              type: string
+                              example: "Remington 700 6mm bolt-action rifle"
+                            usedBy:
+                              type: array
+                              items:
+                                type: string
+                                example: "Charles Whitman"
+                            caseCount:
+                              type: integer
+                              example: 1
+                            caliber:
+                              type: string
+                              example: "Small"
+                            firearmClassification:
+                              type: string
+                              example: "Rifle"
+        404:
+          description: "No firearms were found"
+        500:
+          description: "Internal server error"
+  /firearms/{id}:
+    get:
+      summary: "Retrieve specific firearm data by ID"
+      description: "Returns detailed information about a specific firearm"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: "The ID of the firearm to retrieve"
+      responses:
+        200:
+          description: "Detailed information about the specified firearm"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Firearms retrieved successfully"
+                  data:
+                    type: object
+                    properties:
+                      makeAndModel:
+                        type: string
+                        example: "Remington 700 6mm bolt-action rifle"
+                      usedBy:
+                        type: array
+                        items:
+                          type: string
+                          example: "Charles Whitman"
+                      caseCount:
+                        type: integer
+                        example: 1
+                      caliber:
+                        type: string
+                        example: "Small"
+                      firearmClassification:
+                        type: string
+                        example: "Rifle"
+        404:
+          description: "No firearms were found"
+        500:
+          description: "Internal server error"
