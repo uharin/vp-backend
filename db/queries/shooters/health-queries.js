@@ -20,11 +20,11 @@ const GET_HEALTHS_QUERY = `
     v.type AS voluntary_involuntary
   FROM
     health_and_mental_health hm
-    LEFT JOIN family_mental_health_issues f ON hm.family_mental_health_issues_id = f.family_mental_health_issues_id
-    LEFT JOIN mental_illnesses mi ON hm.mental_illness_id = mi.mental_illness_id
-    LEFT JOIN substance_abuse sa ON hm.substance_abuse_id = sa.substance_abuse_id
-    LEFT JOIN suicidality s ON hm.suicidality_id = s.suicidality_id
-    LEFT JOIN voluntary_involuntary v ON hm.voluntary_involuntary_hospitalization = v.voluntary_id
+    LEFT JOIN family_mental_health_issues f USING (family_mental_health_issues_id)
+    LEFT JOIN mental_illnesses mi USING (mental_illness_id)
+    LEFT JOIN substance_abuse sa USING (substance_abuse_id)
+    LEFT JOIN suicidality s USING (suicidality_id)
+    LEFT JOIN voluntary_involuntary v USING (voluntary_id)
   WHERE
       hm.health_and_mental_health_id = $1;
 `;

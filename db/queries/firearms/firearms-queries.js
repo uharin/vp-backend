@@ -8,18 +8,12 @@ export const generateFirearmsQuery = (params = '') => `
     ca.size AS caliber,
     fc.name AS firearm_classification
   FROM firearms fa
-  LEFT JOIN case_firearms cf 
-    ON fa.firearm_id = cf.firearm_id
-  LEFT JOIN caliber ca 
-    ON cf.caliber_id = ca.caliber_id
-  LEFT JOIN firearm_classifications fc 
-    ON cf.firearm_classification_id = fc.firearm_classification_id
-  LEFT JOIN cases c 
-    ON cf.case_id = c.case_id
-  LEFT JOIN case_shooters cs 
-    ON c.case_id = cs.case_id
-  LEFT JOIN shooters sh 
-    ON cs.shooter_id = sh.shooter_id
+  LEFT JOIN case_firearms cf USING (firearm_id)
+  LEFT JOIN caliber ca USING (caliber_id)
+  LEFT JOIN firearm_classifications fc USING (firearm_classification_id)
+  LEFT JOIN cases c USING (case_id)
+  LEFT JOIN case_shooters cs USING (case_id)
+  LEFT JOIN shooters sh USING (shooter_id)
   ${params}
   GROUP BY 
     fa.firearm_id, 
@@ -50,24 +44,15 @@ export const FIREARMS_SUBQUERY = `
     cf.gifted,
     cf.unknown
   FROM case_firearms cf
-  LEFT JOIN firearms fa 
-    ON cf.firearm_id = fa.firearm_id
-  LEFT JOIN caliber ca
-    ON cf.caliber_id = ca.caliber_id
-  LEFT JOIN firearm_classifications fc
-    ON cf.firearm_classification_id = fc.firearm_classification_id
-  LEFT JOIN firearm_illegal_purchases fil
-    ON cf.firearm_illegal_id = fil.firearm_illegal_id
-  LEFT JOIN firearm_legal_purchases fle 
-    ON cf.firearm_legal_id = fle.firearm_legal_id
-  LEFT JOIN firearm_purchase_timeframes ftp
-    ON cf.firearm_purchase_timeframe_id = ftp.firearm_purchase_timeframe_id
-  LEFT JOIN firearm_thefts fth
-    ON cf.firearm_theft_id = fth.firearm_theft_id
-  LEFT JOIN case_shooters cs 
-    ON cf.case_id = cs.case_id
-  LEFT JOIN shooters sh 
-    ON cs.shooter_id = sh.shooter_id
+  LEFT JOIN firearms fa USING (firearm_id)
+  LEFT JOIN caliber ca USING (caliber_id)
+  LEFT JOIN firearm_classifications fc USING (firearm_classification_id)
+  LEFT JOIN firearm_illegal_purchases fil USING (firearm_illegal_id)
+  LEFT JOIN firearm_legal_purchases fle USING (firearm_legal_id)
+  LEFT JOIN firearm_purchase_timeframes ftp USING (firearm_purchase_timeframe_id)
+  LEFT JOIN firearm_thefts fth USING (firearm_theft_id)
+  LEFT JOIN case_shooters cs USING (case_id)
+  LEFT JOIN shooters sh USING (shooter_id)
   GROUP BY 
     cf.case_id, 
     fa.make_and_model,

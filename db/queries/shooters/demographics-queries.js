@@ -27,17 +27,17 @@ const GET_DEMOGRAPHICS_QUERY = `
     sp.performance_category AS school_performance
   FROM
     shooter_demographics sd
-    LEFT JOIN birth_orders bo ON sd.birth_order_id = bo.birth_order_id
-    LEFT JOIN community_involvements ci ON sd.community_involvement_id = ci.community_involvement_id
-    LEFT JOIN educations e ON sd.education_id = e.education_id
-    LEFT JOIN employment_types et ON sd.employment_type_id = et.employment_type_id
-    LEFT JOIN genders g ON sd.gender_id = g.gender_id
-    LEFT JOIN military_branches mb ON sd.military_branch_id = mb.military_branch_id
-    LEFT JOIN military_services ms ON sd.military_service_id = ms.military_service_id
-    LEFT JOIN races r ON sd.race_id = r.race_id
-    LEFT JOIN relationship_statuses rs ON sd.relationship_status_id = rs.relationship_status_id
-    LEFT JOIN religions rel ON sd.religion_id = rel.religion_id
-    LEFT JOIN school_performances sp ON sd.school_performance_id = sp.school_performance_id
+    LEFT JOIN birth_orders bo USING (birth_order_id)
+    LEFT JOIN community_involvements ci USING (community_involvement_id)
+    LEFT JOIN educations e USING (education_id)
+    LEFT JOIN employment_types et USING (employment_type_id)
+    LEFT JOIN genders g USING (gender_id)
+    LEFT JOIN military_branches mb USING (military_branch_id)
+    LEFT JOIN military_services ms USING (military_service_id)
+    LEFT JOIN races r USING (race_id)
+    LEFT JOIN relationship_statuses rs USING (relationship_status_id)
+    LEFT JOIN religions rel USING (religion_id)
+    LEFT JOIN school_performances sp USING (school_performance_id)
   WHERE
     sd.shooter_demographics_id = $1;
 `;

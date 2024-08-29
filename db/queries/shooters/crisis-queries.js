@@ -17,10 +17,8 @@ const GET_SIGNS_OF_CRISIS_QUERY = `
     ct.timeframe AS crisis_timeframe
   FROM
       signs_of_crisis sc
-      LEFT JOIN triggering_events te
-        ON sc.triggering_event_id = te.triggering_event_id
-      LEFT JOIN crisis_timeframes ct
-        ON sc.crisis_timeframe_id = ct.crisis_timeframe_id
+      LEFT JOIN triggering_events te USING (triggering_event_id)
+      LEFT JOIN crisis_timeframes ct USING (crisis_timeframe_id)
   WHERE
       sc.signs_of_crisis_id = $1;
 `;

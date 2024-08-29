@@ -18,16 +18,11 @@ const GET_MOTIVATIONS_QUERY = `
     rp.description AS role_of_psychosis
   FROM
     grievances_and_motivations gm
-    LEFT JOIN known_prejudices kp
-      ON gm.known_prejudices_id = kp.known_prejudices_id
-    LEFT JOIN motive_other mo
-      ON gm.motive_other_id = mo.motive_other_id
-    LEFT JOIN racism r
-      ON gm.racism_id = r.racism_id
-    LEFT JOIN religious_hate rh
-      ON gm.religious_hate_id = rh.religious_hate_id
-    LEFT JOIN role_of_psychosis rp
-      ON gm.role_of_psychosis_id = rp.role_of_psychosis_id
+    LEFT JOIN known_prejudices kp USING (known_prejudices_id)
+    LEFT JOIN motive_other mo USING (motive_other_id)
+    LEFT JOIN racism r USING (racism_id)
+    LEFT JOIN religious_hate rh USING (religious_hate_id)
+    LEFT JOIN role_of_psychosis rp USING (role_of_psychosis_id)
   WHERE
     gm.grievances_and_motivations_id = $1;
 `;

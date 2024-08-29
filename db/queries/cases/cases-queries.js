@@ -56,30 +56,18 @@ export const generateCasesQuery = (params = '') => `
     )
   ) AS firearms
   FROM cases c
-  LEFT JOIN states s
-    ON c.state_id = s.state_id
-  LEFT JOIN regions r 
-    ON c.region_id = r.region_id
-  LEFT JOIN civic_designations cd 
-    ON c.civic_designation_id = cd.civic_designation_id
-  LEFT JOIN locations l 
-    ON c.location_id = l.location_id
-  LEFT JOIN access_types at 
-    ON c.access_type_id = at.access_type_id
-  LEFT JOIN access_methods am 
-    ON c.access_method_id = am.access_method_id
-  LEFT JOIN victim_locations vl 
-    ON c.victim_location_id = vl.victim_location_id
-  LEFT JOIN armed_bystanders ab 
-    ON c.armed_bystander_id = ab.armed_bystander_id
-  LEFT JOIN case_firearms cf
-    ON c.case_id = cf.case_id
-  LEFT JOIN case_shooters cs 
-    ON c.case_id = cs.case_id
-  LEFT JOIN shooters sh 
-    ON cs.shooter_id = sh.shooter_id
-  LEFT JOIN FirearmsData fd
-    ON c.case_id = fd.case_id
+  LEFT JOIN states s USING (state_id)
+  LEFT JOIN regions r USING (region_id)
+  LEFT JOIN civic_designations cd USING (civic_designation_id)
+  LEFT JOIN locations l USING (location_id)
+  LEFT JOIN access_types at USING (access_type_id)
+  LEFT JOIN access_methods am USING (access_method_id)
+  LEFT JOIN victim_locations vl USING (victim_location_id)
+  LEFT JOIN armed_bystanders ab USING (armed_bystander_id)
+  LEFT JOIN case_firearms cf USING (case_id)
+  LEFT JOIN case_shooters cs USING (case_id)
+  LEFT JOIN shooters sh USING (shooter_id)
+  LEFT JOIN FirearmsData fd USING (case_id)
   ${params}
   GROUP BY
     c.case_id,

@@ -20,10 +20,8 @@ const GET_TRAUMAS_QUERY = `
     ss.socioeconomic_status AS childhood_socioeconomic_status
   FROM
       childhood_traumas ct
-      LEFT JOIN socioeconomic_status ss
-        ON ct.childhood_socioeconomic_status_id = ss.socioeconomic_status_id
-      LEFT JOIN adult_traumas at
-        ON ct.adult_trauma_id = at.adult_trauma_id
+      LEFT JOIN socioeconomic_status ss USING (socioeconomic_status_id)
+      LEFT JOIN adult_traumas at USING (adult_trauma_id)
   WHERE
       ct.childhood_trauma_id = $1;
 `;
