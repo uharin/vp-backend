@@ -24,7 +24,7 @@ export const generateFirearmsQuery = (params = '') => `
 
 // Used in case query
 export const FIREARMS_SUBQUERY = `
-  WITH FirearmsData AS (
+  FirearmsData AS (
   SELECT
     cf.case_id,
     fa.make_and_model,

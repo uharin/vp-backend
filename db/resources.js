@@ -1,6 +1,7 @@
 import { generateFirearmsQuery } from './queries/firearms/firearms-queries.js';
 import { generateCasesQuery } from './queries/cases/cases-queries.js';
 import { generateShootersQuery } from './queries/shooters/shooters-queries.js';
+import { generateVictimsQuery } from './queries/victims/victims-queries.js';
 import { getSignsOfCrisis } from './queries/shooters/crisis-queries.js';
 import { getTraumas } from './queries/shooters/trauma-queries.js';
 import { getMotivations } from './queries/shooters/motivation-queries.js';
@@ -32,6 +33,11 @@ export const RESOURCES = {
       shooter_demographics: getDemographics,
       violence_and_crimes: getCrimeViolence,
     },
+  },
+  victims: {
+    table: 'v',
+    id: 'victim_id',
+    generateQuery: () => generateVictimsQuery,
   },
   // Add more entities here as needed
 };

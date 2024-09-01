@@ -1,5 +1,5 @@
 import importData from './base_import.js';
-import { parseValue } from '../handlers/utils.js';
+import { capitalize, parseValue } from '../handlers/utils.js';
 
 /* 
   Note: { offset: 0 } is due to discrepancy in original database, where IDs started at 0. 
@@ -14,7 +14,7 @@ const processVictimRow = async (row, pool) => {
     const gender_id = parseValue(row['Gender'], parseInt, { offset: row['Gender'] === '3' ? -1 : 1 }); // Conditional offset is because there is no '2' value in the data, only 0, 1, and 3
     const race_id = parseValue(row['Race'], parseInt);
     const victim_knew_shooter_status_id = parseValue(row['Knew Shooter'], parseInt);
-    const relationship_to_shooter_details = row['If Known, Relationship to Shooter'] || null;
+    const relationship_to_shooter_details = capitalize(row['If Known, Relationship to Shooter']) || null;
     const victim_relationship_id = parseValue(row['Relationship to Shooter'], parseInt);
     const life_expectancy = parseValue(row['Life Expectancy'], parseFloat, { offset: 0 });
     const years_lost = parseValue(row['Years Lost'], parseFloat, { offset: 0 });
